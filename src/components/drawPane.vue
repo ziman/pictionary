@@ -1,0 +1,158 @@
+<template>
+	<div>
+		<canvas
+			id="tekenbord"
+			ref="canvas"
+			@mousedown="mousedown"
+			@mouseup="mouseup"
+			@mousemove="mousemove">
+		</canvas>
+		<div :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay">
+			<div v-if="word.pickAWord.length > 0">
+				<h2>Choose a word to draw: </h2>
+				<span v-for="(woord, index) in word.pickAWord" :key="index" class="woord" @click="pickWord(index)">{{woord}}</span>
+			</div>
+			<div v-else>
+				<h2>{{game.drawer.username}} is choosing a word</h2>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+import {mapState} from 'vuex';
+export default {
+	name: 'drawPane',
+	data() {
+		return {
+			canvas: null,
+			ctx: null,
+			ctxOptions: {
+				strokeStyle: '#000',
+				lineCap: 'round',
+				lineJoin: 'round',
+				lineWidth: 1
+			},
+			isDrawing: false,
+			iAmDrawer: true,
+			lastX: 0,
+			lastY: 1,
+		}
+	},
+	methods: {
+		mouseup(e) {
+			this.isDrawing = false;
+		},
+		mousedown(e) {
+			this.isDrawing = true;
+			this.lastX = e.offsetX;
+			this.lastY = e.offsetY;
+		},
+		mousemove(e) {
+			if(this.iAmDrawer) {
+				this.teken(e, null)
+			}
+		},
+		teken(e, data) {
+			if(this.isDrawing || data) {
+				const { offsetX, offsetY } =  data || e;
+				const { lastX, lastY } = data || this;
+				const w = this.canvas.width;
+				const h = this.canvas.height;
+
+				if(this.isDrawing) {
+					this.ctx.beginPath();
+					this.ctx.moveTo(lastX,lastY);
+					this.ctx.lineTo(offsetX, offsetY);
+					this.ctx.stroke();
+				} else if(data) {
+					this.ctx.beginPath();
+					this.ctx.moveTo(lastX * w ,lastY * h);
+					this.ctx.lineTo(offsetX * w, offsetY * h);
+					this.ctx.stroke();
+				}
+
+				if(e){
+					this.$socket.emit('tekenen', {
+						lastX: this.lastX / w,
+						lastY: this.lastY / h,
+						offsetX: offsetX / w,
+						offsetY: offsetY / h,
+						color: this.ctxOptions.strokeStyle
+					})
+				}
+				this.lastX = offsetX;
+				this.lastY = offsetY;
+			}
+		},
+		pickWord(index) {
+			this.$socket.emit('pickWord',this.word.pickAWord[index])
+		}
+	},
+	watch: {
+		//if any option in ctxOptions changes, update the ctx object.
+		//TODO find a way to only update the actual changed property without making a watcher for each.
+		ctxOptions: {
+			handler(newV) {
+				this.ctx.strokeStyle = this.ctxOptions.strokeStyle;
+				this.ctx.lineCap = this.ctxOptions.lineCap;
+				this.ctx.lineJoin = this.ctxOptions.lineJoin;
+				this.ctx.lineWidth = this.ctxOptions.lineWidth;
+			},
+			deep: true
+		}
+	},
+	sockets: {
+		drawing(data) {
+			this.teken(null, data)
+		}
+	},
+	computed: {
+		...mapState([
+			'word',
+			'gameOverlay',
+			'game'
+		]),
+		overlaySize() {
+			if(this.canvas) {
+				return {
+					width: this.canvas.width + 'px',
+					height:this.canvas.height + 'px'
+				}
+			}
+		}
+	},
+	mounted: function() {
+		this.$nextTick(function () {
+			// Code that will run only after the
+			// entire view has been rendered
+			this.canvas = this.$refs.canvas;
+			this.ctx = this.canvas.getContext('2d');
+			this.canvas.width = this.$refs.canvas.parentNode.clientWidth;
+			this.canvas.height = window.innerHeight;
+			this.canvasWidth = this.canvas.width;
+			this.canvasHeight = this.canvas.height;
+			this.ctxOptions.lineWidth
+		})
+	}
+}
+</script>
+
+<style>
+#tekenbord-overlay {
+	position: absolute;
+	top: 0;
+	background-color: rgba(0,0,0,0.8);
+	color: white;
+	padding: 3em;
+	box-sizing: border-box;
+}
+.woord{
+	display:inline-block;
+	margin:0 1em .5em 0;
+	background-color:#eee;
+	padding:1em;
+	color:black;
+	cursor:pointer;
+}
+</style>

@@ -1,28 +1,51 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<loginScreen id="loginScreen" v-if="gameStarted === false" />
+	<div v-if="gameStarted === true" class="container">
+		<appHeader class="twelve columns"/>
+		<div>
+			<userList class="two columns" />
+			<drawPane class="seven columns" id="drawpane"/>
+			<chatPane class="three columns" />
+		</div>
+	</div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import loginScreen from './components/loginScreen.vue'
+import userList from './components/userList.vue'
+import drawPane from './components/drawPane.vue'
+import chatPane from './components/chatPane.vue'
+import appHeader from './components/appHeader.vue'
+
+import { mapState } from 'vuex'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+	name: 'app',
+	components: {
+		loginScreen,
+		userList,
+		drawPane,
+		chatPane,
+		appHeader
+	},
+	computed: {
+		...mapState([
+			'user',
+			'gameStarted'
+		])
+	}
+
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#loginScreen{
+	width:40em;
+	margin:5em auto;
+}
+#drawpane{
+	position: relative;
 }
 </style>
