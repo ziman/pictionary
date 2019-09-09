@@ -1,11 +1,13 @@
 <template>
-	<div>
+	<div >
 		<canvas
 			id="tekenbord"
 			ref="canvas"
 			@mousedown="mousedown"
 			@mouseup="mouseup"
-			@mousemove="mousemove">
+			@mousemove="mousemove"
+			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
+			>
 		</canvas>
 		<div :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay">
 			<div v-if="word.pickAWord.length > 0">
@@ -34,9 +36,9 @@ export default {
 				lineWidth: 1
 			},
 			isDrawing: false,
-			iAmDrawer: true,
 			lastX: 0,
 			lastY: 1,
+			imgObjArray: []
 		}
 	},
 	methods: {
@@ -44,13 +46,34 @@ export default {
 			this.isDrawing = false;
 		},
 		mousedown(e) {
+			this.imgObjArray.push(this.canvas.toDataURL());
 			this.isDrawing = true;
 			this.lastX = e.offsetX;
 			this.lastY = e.offsetY;
 		},
 		mousemove(e) {
-			if(this.iAmDrawer) {
+			if(this.game.youAreTheDrawer) {
 				this.teken(e, null)
+			}
+		},
+		undoDrawing(e, data){
+			if(this.game.youAreTheDrawer || data){
+				//clears current drawing and replace it with a base64 img provided either through socket or in our array
+				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				var image = new Image();
+				image.onload = () => {
+					this.ctx.drawImage(image,0,0)
+				}
+				let previousState;
+				if(data){
+					previousState = data.imagesrc;
+				} else {
+					previousState = this.imgObjArray.pop();
+					this.$socket.emit('undoAction', {
+						imagesrc: previousState
+					});
+				}
+				image.src = previousState;
 			}
 		},
 		teken(e, data) {
@@ -87,6 +110,8 @@ export default {
 		},
 		pickWord(index) {
 			this.$socket.emit('pickWord',this.word.pickAWord[index])
+			//TODO fix me. I reset the imgObjArray here now, but probably it should have a clean function
+			this.imgObjArray = [];
 		}
 	},
 	watch: {
@@ -105,6 +130,9 @@ export default {
 	sockets: {
 		drawing(data) {
 			this.teken(null, data)
+		},
+		undoAction(data) {
+			this.undoDrawing(null, data)
 		}
 	},
 	computed: {

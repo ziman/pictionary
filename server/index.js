@@ -58,7 +58,9 @@ function onConnection(socket){
 		io.emit('gameStarted', gameOptions.noOfRounds);
 		gameTimer.newRound();
 	})
-
+	socket.on('undoAction', data => {
+		socket.broadcast.emit('undoAction', data)
+	})
 	socket.on('disconnect', () => {
 	  gameMaster.removeUser(socket.username);
 	  socket.broadcast.emit('updateUsers', gameMaster.getUsers());

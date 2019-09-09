@@ -7,7 +7,7 @@ import normalize from './css/normalize.css'
 import skeleton from './css/skeleton.css'
 
 Vue.use(normalize, skeleton)
-
+Vue.use(require('vue-shortkey'))
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({

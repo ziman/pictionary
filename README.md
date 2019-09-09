@@ -51,3 +51,4 @@ clear tool
 * Drawing should only be possible for the drawer
 * Users should not be able to guess anymore after a correct (but chatting should be possible)
 * The drawer shouldn't be able to guess words.
+* when no users with usernames are connected - cancel the game (stop timer too)

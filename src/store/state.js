@@ -10,6 +10,7 @@ export default {
 		noOfRounds: 0,
 		currentRound: 0,
 		drawer: '',
+		youAreTheDrawer: false,
 		timer: 0
 	},
 	gameOverlay: true,

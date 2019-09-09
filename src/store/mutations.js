@@ -12,6 +12,7 @@ export default {
 	},
 	SOCKET_announceDrawer: (state, data) => {
 		state.word.pickAWord = [];
+		state.game.youAreTheDrawer = false;
 		state.word.pickedWord = '';
 		state.gameOverlay = true;
 		state.game.drawer = data.drawer;
@@ -20,9 +21,13 @@ export default {
 	SOCKET_chooseWord: (state, data) => {
 		state.word.pickAWord = data;
 		state.gameOverlay = true;
+		state.game.youAreTheDrawer = true;
+
 	},
 	SOCKET_startRound: (state, word) => {
-		if(word) state.word.pickedWord = word;
+		if(word) {
+			state.word.pickedWord = word;
+		}
 		state.gameOverlay = false;
 	},
 	SOCKET_updatetimer: (state, timer) => {
