@@ -23,19 +23,24 @@ header
  - *show timer
  - *show round / rounds
  - *show word that you are drawing (if drawer)*
- - show empty spaces for the # letters the word has
+ - *show empty spaces for the # letters the word has*
 
  general
  - show end game screen with possibility to restart
- - undo drawing functionality
+	 - think about overlay with points on it - probably a system with state/mutations should be implemented
+ - *undo drawing functionality*
+ - the word should be shown to everyone when the round ended.
+ - transition animations. =)
+ - clear canvas at new round.
 
 ##todos shoulds
-Have one size for the canvas so drawings are 1:1 the same for everyone (and resizing shouldn't delete drawings)
+*Have one size for the canvas so drawings are 1:1 the same for everyone (and resizing shouldn't delete drawings)*
 Have the round timer decrease to some extend when the first user guesses right.
-Show the number of letters in the topbar
+*Show the number of letters in the topbar*
 point system based on time.
-	For example amount of seconds left * 100 points.
+	For example amount of seconds left * 10 points.
 	After each guess the time goes down by time left / amount of people ?
+		timer = timer - (timer/users.length)
 Have some sort of timeout between loading states for better overview of what's going on.
 
 --- for the canvas
@@ -48,7 +53,7 @@ clear tool
 * The login screen only looks at gamestarted that is announced by socket. It should wait for both a username and the game start.
 * Upon selecting a username the client should receive a gameStarted property to jump into games that are running.
 * Should not be able to start the game with one person
-* Drawing should only be possible for the drawer
+*Drawing should only be possible for the drawer*
 * Users should not be able to guess anymore after a correct (but chatting should be possible)
 * The drawer shouldn't be able to guess words.
 * when no users with usernames are connected - cancel the game (stop timer too)

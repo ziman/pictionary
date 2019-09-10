@@ -1,8 +1,12 @@
 <template>
 	<div>
-		<span>round {{game.currentRound + 1}} / {{game.noOfRounds}} </span>
-		<span>Time left: {{game.timer}}</span>
-		<span v-if="word.pickedWord.length > 0">You are drawing: {{word.pickedWord}}</span>
+		<div class="two columns">round {{game.currentRound + 1}} / {{game.noOfRounds}} </div>
+		<div class="seven columns" v-if="word.pickedWord.length > 0">You are drawing: {{word.pickedWord}}</div>
+		<div class="seven columns" v-else-if="word.lengthWord">
+			Word to guess:
+			<span class="letterlijntje" v-for="space in word.lengthWord">_ </span>
+		</div>
+		<div class="two columns">Time left: {{game.timer}}</div>
 	</div>
 </template>
 
@@ -19,6 +23,14 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+div {
+	display: inline-block;
+	margin:.5em 1em;
+}
+.letterlijntje{
+	font-size:3em;
+	font-weight: bold;
+	line-height:1px;
+}
 </style>

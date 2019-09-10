@@ -41,7 +41,7 @@ function newRound(){
 	io.emit('announceDrawer',{
 		drawer:newRound.drawingPlayer,
 		round: newRound.currentRound,
-		time: newRound.drawingTime
+		time: newRound.lengthOfRound
 	})
 	io.emit('updateUsers', gameMaster.getUsers());
 

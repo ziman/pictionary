@@ -6,7 +6,7 @@
 		<div>
 			<userList class="two columns" />
 			<drawPane class="seven columns" id="drawpane"/>
-			<chatPane class="three columns" />
+			<chatPane id="chatPane" class="three columns" />
 		</div>
 	</div>
   </div>
@@ -47,5 +47,8 @@ export default {
 }
 #drawpane{
 	position: relative;
+}
+#chatPane{
+	float:right;
 }
 </style>

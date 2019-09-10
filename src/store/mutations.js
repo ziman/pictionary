@@ -11,12 +11,15 @@ export default {
 		state.gameStarted = true;
 	},
 	SOCKET_announceDrawer: (state, data) => {
+		//reset in case you were drawer previously
 		state.word.pickAWord = [];
 		state.game.youAreTheDrawer = false;
 		state.word.pickedWord = '';
+		//set new data
 		state.gameOverlay = true;
 		state.game.drawer = data.drawer;
 		state.game.currentRound = data.round;
+		state.game.timer = data.lengthOfRound;
 	},
 	SOCKET_chooseWord: (state, data) => {
 		state.word.pickAWord = data;
@@ -24,9 +27,12 @@ export default {
 		state.game.youAreTheDrawer = true;
 
 	},
-	SOCKET_startRound: (state, word) => {
-		if(word) {
-			state.word.pickedWord = word;
+	SOCKET_startRound: (state, wordData) => {
+		if(wordData.word) { //the actual word
+			state.word.pickedWord = wordData.word;
+		}
+		if(wordData.wordLength) { //the length of the word
+			state.word.lengthWord = wordData.wordLength
 		}
 		state.gameOverlay = false;
 	},

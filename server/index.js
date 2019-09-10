@@ -49,8 +49,8 @@ function onConnection(socket){
 	socket.on('pickWord', word => {
 		gameMaster.setWord(word);
 		gameTimer.startTimer();
-		socket.emit('startRound', word)
-		socket.broadcast.emit('startRound')
+		socket.emit('startRound', {word: word})
+		socket.broadcast.emit('startRound', {wordLength: word.length})
 	})
 
 	socket.on('startGame', (gameOptions) => {

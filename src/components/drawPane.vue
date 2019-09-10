@@ -3,6 +3,8 @@
 		<canvas
 			id="tekenbord"
 			ref="canvas"
+			:width="cnvWidth"
+			:height="cnvHeight"
 			@mousedown="mousedown"
 			@mouseup="mouseup"
 			@mousemove="mousemove"
@@ -28,6 +30,8 @@ export default {
 	data() {
 		return {
 			canvas: null,
+			cnvWidth: 0,
+			cnvHeight:0,
 			ctx: null,
 			ctxOptions: {
 				strokeStyle: '#000',
@@ -112,6 +116,19 @@ export default {
 			this.$socket.emit('pickWord',this.word.pickAWord[index])
 			//TODO fix me. I reset the imgObjArray here now, but probably it should have a clean function
 			this.imgObjArray = [];
+		},
+		handleResize(){
+			let ploatie = this.canvas.toDataURL();
+
+			this.$nextTick(() => {
+				let width = this.canvas.parentNode.clientWidth;
+				this.cnvWidth = width;
+				//16:9 ?
+				let height = this.cnvWidth * 10 / 16;
+				this.cnvHeight = height;
+				//reapply image data (maybe rename undo function?)
+				this.undoDrawing(null, {imagesrc: ploatie})
+			})
 		}
 	},
 	watch: {
@@ -142,11 +159,9 @@ export default {
 			'game'
 		]),
 		overlaySize() {
-			if(this.canvas) {
-				return {
-					width: this.canvas.width + 'px',
-					height:this.canvas.height + 'px'
-				}
+			return{
+				width: this.cnvWidth + 'px',
+				height: this.cnvHeight + 'px'
 			}
 		}
 	},
@@ -156,12 +171,11 @@ export default {
 			// entire view has been rendered
 			this.canvas = this.$refs.canvas;
 			this.ctx = this.canvas.getContext('2d');
-			this.canvas.width = this.$refs.canvas.parentNode.clientWidth;
-			this.canvas.height = window.innerHeight;
-			this.canvasWidth = this.canvas.width;
-			this.canvasHeight = this.canvas.height;
-			this.ctxOptions.lineWidth
-		})
+			this.handleResize();
+			// this.canvas.width = this.$refs.canvas.parentNode.clientWidth;
+			// this.canvas.height = window.innerHeight;
+		}),
+		window.addEventListener('resize', this.handleResize);
 	}
 }
 </script>

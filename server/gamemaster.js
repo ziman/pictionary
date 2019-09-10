@@ -88,7 +88,8 @@ function newRoundMachine(){
 		let newRound = {
 			drawingPlayer: game.players[game.drawer],
 			words: words,
-			currentRound: game.currentRound
+			currentRound: game.currentRound,
+			lengthOfRound: game.lengthGame
 		}
 		return newRound;
 	} else {
