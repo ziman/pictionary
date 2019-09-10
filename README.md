@@ -31,7 +31,7 @@ header
  - *undo drawing functionality*
  - the word should be shown to everyone when the round ended.
  - transition animations. =)
- - clear canvas at new round.
+ - *clear canvas at new round.*
 
 ##todos shoulds
 *Have one size for the canvas so drawings are 1:1 the same for everyone (and resizing shouldn't delete drawings)*

@@ -142,6 +142,10 @@ export default {
 				this.ctx.lineWidth = this.ctxOptions.lineWidth;
 			},
 			deep: true
+		},
+		gameOverlay: function(gameOverlayBoolean) {
+			//if the gameoverlay closes, clear the canvas.
+			if(gameOverlayBoolean === false) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		}
 	},
 	sockets: {
