@@ -8,9 +8,7 @@ const port = process.env.PORT || 3000;
 app.use(cors())
 
 const gameMaster = require('./gamemaster.js');
-const gameTimer = require('./timer.js');
-
-gameTimer.setio(io);
+gameMaster.setio(io);
 
 // app.use(express.static(__dirname + '/static'));
 function onConnection(socket){
@@ -40,7 +38,7 @@ function onConnection(socket){
 		} else if (correct === 'CORRECT_AND_ROUND_END') {
 			data.correct = true;
 			socket.emit('woordGok', data);
-			gameTimer.stopTimer();
+			gameMaster.stopTimer();
 		} else{
 			io.emit('woordGok', data);
 		}
@@ -48,7 +46,7 @@ function onConnection(socket){
 
 	socket.on('pickWord', word => {
 		gameMaster.setWord(word);
-		gameTimer.startTimer();
+		gameMaster.startTimer();
 		socket.emit('startRound', {word: word})
 		socket.broadcast.emit('startRound', {wordLength: word.length})
 	})
@@ -56,7 +54,7 @@ function onConnection(socket){
 	socket.on('startGame', (gameOptions) => {
 		gameMaster.createGame(gameOptions.lengthGame, gameOptions.noOfRounds);
 		io.emit('gameStarted', gameOptions.noOfRounds);
-		gameTimer.newRound();
+		gameMaster.newRound();
 	})
 	socket.on('undoAction', data => {
 		socket.broadcast.emit('undoAction', data)

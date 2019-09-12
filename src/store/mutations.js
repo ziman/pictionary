@@ -15,6 +15,7 @@ export default {
 		state.word.pickAWord = [];
 		state.game.youAreTheDrawer = false;
 		state.word.pickedWord = '';
+		state.word.lengthWord = 0;
 		//set new data
 		state.gameOverlay = true;
 		state.game.drawer = data.drawer;

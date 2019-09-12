@@ -16,6 +16,7 @@ export default {
 	gameOverlay: true,
 	word: {
 		pickAWord: [],
-		pickedWord: ''
+		pickedWord: '',
+		lengthWord: ''
 	}
 }

@@ -1,6 +1,10 @@
 const woordenlijst = require('./words.json');
 
-let game = {
+let timer;
+let io;
+let interval;
+
+let gameObj = {
 	totalRounds: 0,
 	currentRound: 0,
 	lengthGame: 0,
@@ -10,18 +14,19 @@ let game = {
 	correctGuesses: 0
 }
 
+let game = {...gameObj};
+
 module.exports = {
 	createGame: function(lengthGame, noOfRounds) {
+		game = {...gameObj}
 		game.lengthGame = lengthGame;
 		game.totalRounds = noOfRounds;
-		game.drawer = -1;
-		game.currentRound = 0;
 		console.log("create game", game.lengthGame, game.totalRounds);
 		return;
 	},
 	newRound: function() {
 		console.log('new round');
-		return newRoundMachine()
+		return newRound()
 	},
 	setWord: function(word){
 		game.currentWord = word;
@@ -39,9 +44,6 @@ module.exports = {
 		} else{
 			return 'NOT_CORRECT';
 		}
-	},
-	getLengthOfRound: function(){
-		return game.lengthGame;
 	},
 	addUser: function(data) {
 		let user = { //...data ??? waarschijnlijk ja.
@@ -63,13 +65,29 @@ module.exports = {
 				break;
 			}
 		}
+		if(game.players.length === 0){
+			clearInterval(interval)
+			game = {...gameObj}
+		}
 	},
 	getUsers: function() {
 		return game.players;
+	},//BELOW ADDED FROM ANOTHER FILE, TEST THOROUGHLY
+	setio: function(io2) { //goor. even opzoeken hoe dit echt moet ok?
+		io = io2;
+	},
+	startTimer: function () {
+		const startTime = game.lengthGame;
+		timer = startTime;
+		interval = setInterval(timertje, 1000);
+	},
+	stopTimer: function(){
+		clearInterval(interval)
+		newRound();
 	}
 }
 
-function newRoundMachine(){
+function newRound(){
 	console.log("newroundmachine", game.totalRounds, game.currentRound)
 	if(game.drawer === game.players.length-1) {
 		game.currentRound++;
@@ -84,17 +102,21 @@ function newRoundMachine(){
 		game.drawer++;
 		game.players[game.drawer].drawer = true;
 
-		let words = pickWords(3);
-		let newRound = {
-			drawingPlayer: game.players[game.drawer],
-			words: words,
-			currentRound: game.currentRound,
-			lengthOfRound: game.lengthGame
-		}
-		return newRound;
+		io.emit('announceDrawer',{
+			drawer:game.players[game.drawer],
+			round: game.currentRound,
+			time: game.lengthGame
+		})
+		//update users with new drawer role
+		io.emit('updateUsers', game.players);
+
+		const words = pickWords(3);
+		const drawerID = game.players[game.drawer].id;
+		io.to(drawerID).emit('chooseWord', words);
 	} else {
 		console.log('This game is over yo')
-		return 'GAME_OVER';
+		io.emit('GAME_OVER')
+
 	}
 }
 
@@ -110,4 +132,13 @@ function pickWords(numberOfWords){
 		}
 	}
 	return pickedWords;
+}
+
+function timertje() {
+	timer--;
+	io.emit('updateTimer', timer)
+	if(timer === 0){
+		clearInterval(interval);
+		newRound();
+	}
 }
