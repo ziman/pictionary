@@ -11,22 +11,18 @@
 			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
 			>
 		</canvas>
-		<div :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay">
-			<div v-if="word.pickAWord.length > 0">
-				<h2>Choose a word to draw: </h2>
-				<span v-for="(woord, index) in word.pickAWord" :key="index" class="woord" @click="pickWord(index)">{{woord}}</span>
-			</div>
-			<div v-else>
-				<h2>{{game.drawer.username}} is choosing a word</h2>
-			</div>
-		</div>
+		<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay"></drawOverlay>
 	</div>
 </template>
 
 <script>
 import {mapState} from 'vuex';
+import drawOverlay from './drawOverlay.vue'
 export default {
 	name: 'drawPane',
+	components: {
+		drawOverlay
+	},
 	data() {
 		return {
 			canvas: null,
@@ -112,11 +108,6 @@ export default {
 				this.lastY = offsetY;
 			}
 		},
-		pickWord(index) {
-			this.$socket.emit('pickWord',this.word.pickAWord[index])
-			//TODO fix me. I reset the imgObjArray here now, but probably it should have a clean function
-			this.imgObjArray = [];
-		},
 		handleResize(){
 			let ploatie = this.canvas.toDataURL();
 
@@ -144,8 +135,11 @@ export default {
 			deep: true
 		},
 		gameOverlay: function(gameOverlayBoolean) {
-			//if the gameoverlay closes, clear the canvas.
-			if(gameOverlayBoolean === false) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			//if the gameoverlay closes, clear the canvas and reset undoArray
+			if(gameOverlayBoolean === false) {
+				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				this.imgObjArray = [];
+			}
 		}
 	},
 	sockets: {
@@ -158,7 +152,6 @@ export default {
 	},
 	computed: {
 		...mapState([
-			'word',
 			'gameOverlay',
 			'game'
 		]),

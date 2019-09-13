@@ -2,7 +2,7 @@
 	<div>
 		<div class="two columns">round {{game.currentRound + 1}} / {{game.noOfRounds}} </div>
 		<div class="seven columns" v-if="word.pickedWord.length > 0">You are drawing: {{word.pickedWord}}</div>
-		<div class="seven columns" v-else-if="word.lengthWord">
+		<div class="seven columns" v-else-if="word.lengthWord"> <!-- Add the guessed word here! -->
 			Word to guess:
 			<span class="letterlijntje" v-for="space in word.lengthWord">_ </span>
 		</div>
