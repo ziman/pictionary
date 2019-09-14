@@ -17,16 +17,17 @@ export default {
 		state.word.pickedWord = '';
 		state.word.lengthWord = 0;
 		//set new data
-		state.gameOverlay = true;
+		state.gameOverlay = {
+			show: true,
+			reason: 'wordPicking'
+		}
 		state.game.drawer = data.drawer;
 		state.game.currentRound = data.round;
 		state.game.timer = data.lengthOfRound;
 	},
 	SOCKET_chooseWord: (state, data) => {
 		state.word.pickAWord = data;
-		state.gameOverlay = true;
 		state.game.youAreTheDrawer = true;
-
 	},
 	SOCKET_startRound: (state, wordData) => {
 		if(wordData.word) { //the actual word
@@ -35,12 +36,18 @@ export default {
 		if(wordData.wordLength) { //the length of the word
 			state.word.lengthWord = wordData.wordLength
 		}
-		state.gameOverlay = false;
+		state.gameOverlay.show = false;
 	},
 	SOCKET_updatetimer: (state, timer) => {
 		state.game.timer = timer
 	},
 	SOCKET_woordgok: (state, payload) => {
 		state.chatLog.push(payload)
+	},
+	SOCKET_gameEnd: (state, payload) => {
+		state.gameOverlay = {
+			show: true,
+			reason: 'gameEnd'
+		}
 	}
 }

@@ -11,26 +11,21 @@
 				 <li :class="[user.baas ? 'baas' : '','user-in-the-list']" v-for="user in users">{{ user.username }}</li>
 			 </ul>
 		 </div>
-		 <div v-if="user.baas" class="baas-controls">
-			 <h4>admin panel:</h4>
-			 <form @submit.prevent="startGame" id="baas-controls-form">
-				  <label><input v-model="lcl_drawing_time" type="text" />Drawing time</label>
-				  <label><input v-model="lcl_no_of_rounds" type="text" />Number of rounds</label>
-				  <button>Start game</button>
-			  </form>
-		  </div>
+		 <adminPanel v-if="user.baas" />
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import adminPanel from './adminPanel.vue'
 export default {
 	name: 'loginScreen',
+	components: {
+		adminPanel
+	},
 	data() {
 		return {
-			lcl_username: '',
-			lcl_drawing_time: 80,
-			lcl_no_of_rounds: 3
+			lcl_username: ''
 		}
 	},
 	computed: {
@@ -44,13 +39,6 @@ export default {
 	methods: {
 		setUsername(){
 			this.$socket.emit('setUsername', this.lcl_username);
-		},
-		startGame(){
-			const gameOptions = {
-				lengthGame:this.lcl_drawing_time,
-				noOfRounds:this.lcl_no_of_rounds
-			}
-			this.$socket.emit('startGame', gameOptions)
 		}
 	}
 }

@@ -115,7 +115,7 @@ function newRound(){
 		io.to(drawerID).emit('chooseWord', words);
 	} else {
 		console.log('This game is over yo')
-		io.emit('GAME_OVER')
+		io.emit('gameEnd')
 
 	}
 }

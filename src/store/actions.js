@@ -1,12 +1,5 @@
 export default {
-	// addChatMessage: (context, payload) => {
-	// 	context.commit('addChatMessage', payload)
-	// },
-	// addNewMessage: ({ commit }, payload) => {
-	// 	commit('mAddChatMessage', payload)
-	// },
 	SOCKET_updateUsers: ({ commit }, payload) => {
-		console.log(payload);
 		commit('SOCKET_updateUsers', payload)
 	},
 	SOCKET_setUser: ({ commit }, data) => {
@@ -28,7 +21,9 @@ export default {
 		commit('SOCKET_updatetimer', timer)
 	},
 	SOCKET_woordGok: ({ commit }, payload) => {
-		console.log('actions_woordgok', payload)
 		commit('SOCKET_woordgok', payload)
+	},
+	SOCKET_gameEnd: ({ commit }, payload) => {
+		commit('SOCKET_gameEnd', payload)
 	}
 }

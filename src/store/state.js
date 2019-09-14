@@ -13,7 +13,10 @@ export default {
 		youAreTheDrawer: false,
 		timer: 0
 	},
-	gameOverlay: true,
+	gameOverlay: {
+		show: true,
+		reason: ''
+	},
 	word: {
 		pickAWord: [],
 		pickedWord: '',

@@ -11,7 +11,7 @@
 			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
 			>
 		</canvas>
-		<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay"></drawOverlay>
+		<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
 	</div>
 </template>
 
@@ -134,13 +134,16 @@ export default {
 			},
 			deep: true
 		},
-		gameOverlay: function(gameOverlayBoolean) {
-			//if the gameoverlay closes, clear the canvas and reset undoArray
-			if(gameOverlayBoolean === false) {
-				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-				this.imgObjArray = [];
+		gameOverlay: {
+			handler(gameOverlayState) {
+				//if the gameoverlay closes, clear the canvas and reset undoArray
+				if(gameOverlayState.show === false) {
+					this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+					this.imgObjArray = [];
+				}
+			},
+			deep: true
 			}
-		}
 	},
 	sockets: {
 		drawing(data) {
@@ -185,13 +188,5 @@ export default {
 	color: white;
 	padding: 3em;
 	box-sizing: border-box;
-}
-.woord{
-	display:inline-block;
-	margin:0 1em .5em 0;
-	background-color:#eee;
-	padding:1em;
-	color:black;
-	cursor:pointer;
 }
 </style>

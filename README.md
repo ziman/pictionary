@@ -19,15 +19,15 @@ npm run build
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 #todos needs
-header
- - *show timer
- - *show round / rounds
- - *show word that you are drawing (if drawer)*
- - *show empty spaces for the # letters the word has*
+Overlay:
+1. pickWord (either words or show drawer)
+2. gameEnd (scoreboard for game with boss new game)
+3. Points at roundEnd (scoreboard for round)
+4.
 
  general
- - show end game screen with possibility to restart
-	 - think about overlay with points on it - probably a system with state/mutations should be implemented
+ - *show end game screen with possibility to restart*
+	 - *think about overlay with points on it - probably a system with state/mutations should be implemented*
  - *undo drawing functionality*
  - the word should be shown to everyone when the round ended.
  - transition animations. =)
