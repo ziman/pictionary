@@ -32,23 +32,16 @@ module.exports = {
 		game.currentWord = word;
 		return;
 	},
-	checkWord: function(word){
-		if(word === game.currentWord){
-			game.correctGuesses++;
-			if(game.correctGuesses === game.players.length-1){
-				console.log('ROUNDENDED')
-				game.correctGuesses = 0;
-				return 'CORRECT_AND_ROUND_END'
-			}
-			return 'CORRECT';
-		} else{
-			return 'NOT_CORRECT';
-		}
+	checkWord: function(data, socket){
+		console.log('gokje ', data)
+		wordCheck(data, socket)
 	},
 	addUser: function(data) {
 		let user = { //...data ??? waarschijnlijk ja.
 			username: data.username,
-			id: data.id
+			id: data.id,
+			guessedCorrect: false,
+			points: 0
 		};
 		if(game.players.length === 0) {
 			user.baas = true;
@@ -65,7 +58,7 @@ module.exports = {
 				break;
 			}
 		}
-		if(game.players.length === 0){
+		if(game.players.length === 0){ //reset game
 			clearInterval(interval)
 			game = {...gameObj}
 		}
@@ -118,6 +111,43 @@ function newRound(){
 		io.emit('gameEnd')
 
 	}
+}
+
+function wordCheck(data, socket){
+	if(data.woord === game.currentWord){ //correct guess
+		for(i=0; i < game.players.length; i++){
+			//check who guessed it, make sure it isn't already guessed by them AND that hey aren't the drawer
+			if(game.players[i].id === socket.id && !game.players[i].guessedCorrect && !game.players[i].drawer){
+				game.players[i].guessedCorrect = true;
+				game.correctGuesses++;
+				data.correct = true;
+				socket.emit('woordGok', data);
+				calculatePoints(i)
+				io.emit('updateUsers', game.players);
+			}
+		}
+		if(game.correctGuesses === game.players.length-1){//everyone guessed correctly
+			for(i=0; i < game.players.length; i++){
+				game.players[i].guessedCorrect = false;
+			}
+			game.correctGuesses = 0;
+			clearInterval(interval)
+			newRound();
+		}
+	} else{
+		//incorrect guess or just chatting
+		io.emit('woordGok', data);
+	}
+}
+
+function calculatePoints(userIndex){
+	//if pointType = timebased || guessbased (for now we do timebased)
+	const points = timer;
+	const arbitraryCutoffPoint = 20;
+	if(timer > arbitraryCutoffPoint){
+		timer = timer - Math.floor(timer / game.players.length);
+	}
+	game.players[userIndex].points += points;
 }
 
 function pickWords(numberOfWords){

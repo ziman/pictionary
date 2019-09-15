@@ -30,18 +30,7 @@ function onConnection(socket){
 	});
 
 	socket.on('woordGok', data => {
-		let correct = gameMaster.checkWord(data.woord);
-		console.log(correct, data)
-		if(correct === 'CORRECT') {
-			data.correct = true;
-			socket.emit('woordGok', data);
-		} else if (correct === 'CORRECT_AND_ROUND_END') {
-			data.correct = true;
-			socket.emit('woordGok', data);
-			gameMaster.stopTimer();
-		} else{
-			io.emit('woordGok', data);
-		}
+		gameMaster.checkWord(data, socket);
 	})
 
 	socket.on('pickWord', word => {

@@ -35,12 +35,18 @@ Overlay:
 
 ##todos shoulds
 *Have one size for the canvas so drawings are 1:1 the same for everyone (and resizing shouldn't delete drawings)*
-Have the round timer decrease to some extend when the first user guesses right.
+*Have the round timer decrease to some extend when the first user guesses right.*
 *Show the number of letters in the topbar*
-point system based on time.
-	For example amount of seconds left * 10 points.
-	After each guess the time goes down by time left / amount of people ?
-		timer = timer - (timer/users.length)
+point system
+	(Let admin) choose between:
+	1. *Based on time.
+		For example amount of seconds left * 10 points.
+		After each guess the time goes down by time left / amount of people ?
+			timer = timer - (timer/users.length)*
+	2. Based on guess order
+		If 8 people connect (or guess correctly) the first gets 8 points, the second 7 etc.
+	12. *for this: we need to figure out WHO guessed correcly first and set a correct guess to their {}.*
+		*also then we can count points for this user.*
 Have some sort of timeout between loading states for better overview of what's going on.
 
 --- for the canvas
@@ -54,6 +60,6 @@ clear tool
 * Upon selecting a username the client should receive a gameStarted property to jump into games that are running.
 * Should not be able to start the game with one person
 *Drawing should only be possible for the drawer*
-* Users should not be able to guess anymore after a correct (but chatting should be possible)
-* The drawer shouldn't be able to guess words.
-* when no users with usernames are connected - cancel the game (stop timer too)
+*Users should not be able to guess anymore after a correct (but chatting should be possible)*
+*The drawer shouldn't be able to guess words*.
+*when no users with usernames are connected - cancel the game (stop timer too)*

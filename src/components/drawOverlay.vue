@@ -39,7 +39,7 @@ export default {
 	}
 }
 </script>
-<style>
+<style scoped>
 .woord{
 	display:inline-block;
 	margin:0 1em .5em 0;

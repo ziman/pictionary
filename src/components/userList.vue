@@ -4,8 +4,11 @@
 		<ul>
 			<!-- <li :class="[user.baas ? 'baas' : '','user-in-the-list']"
 			v-for="user in users">{{ user.username }}</li> -->
-			<li :class="[{'baas':user.baas}, {'drawer': user.drawer}, 'user-in-the-list']"
-			v-for="user in users">{{ user.username }}</li>
+			<li :class="[{'baas':user.baas}, {'drawer': user.drawer}, {'correctGuess': user.guessedCorrect}, 'user-in-the-list']"
+			v-for="user in users">{{ user.username }}
+				<span>points: {{user.points}}</span>
+
+			</li>
 		</ul>
 	</div>
 </template>
@@ -28,7 +31,10 @@ export default{
 
 <style>
 .user-in-the-list {
-	
+
+}
+.correctGuess{
+	background-color:lightgreen;
 }
 .user-in-the-list.baas{
 	list-style-type:none;
