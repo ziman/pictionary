@@ -21,5 +21,11 @@ export default {
 		pickAWord: [],
 		pickedWord: '',
 		lengthWord: ''
+	},
+	drawSettings: {
+		strokeStyle: '#000',
+		lineCap: 'round',
+		lineJoin: 'round',
+		lineWidth: 1
 	}
 }

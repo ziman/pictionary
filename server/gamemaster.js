@@ -18,8 +18,8 @@ let game = {...gameObj};
 
 module.exports = {
 	createGame: function(lengthGame, noOfRounds) {
-		game.drawer: -1;
-		game.currentRound: 0;
+		game.drawer = -1;
+		game.currentRound = 0;
 		game.lengthGame = lengthGame;
 		game.totalRounds = noOfRounds;
 		//reset points if this is a new round.

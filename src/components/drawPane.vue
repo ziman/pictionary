@@ -11,6 +11,7 @@
 			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
 			>
 		</canvas>
+		<toolbar v-if="this.game.youAreTheDrawer"/>
 		<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
 	</div>
 </template>
@@ -18,10 +19,12 @@
 <script>
 import {mapState} from 'vuex';
 import drawOverlay from './drawOverlay.vue'
+import toolbar from './toolbar.vue'
 export default {
 	name: 'drawPane',
 	components: {
-		drawOverlay
+		drawOverlay,
+		toolbar
 	},
 	data() {
 		return {
@@ -29,12 +32,6 @@ export default {
 			cnvWidth: 0,
 			cnvHeight:0,
 			ctx: null,
-			ctxOptions: {
-				strokeStyle: '#000',
-				lineCap: 'round',
-				lineJoin: 'round',
-				lineWidth: 1
-			},
 			isDrawing: false,
 			lastX: 0,
 			lastY: 1,
@@ -101,7 +98,7 @@ export default {
 						lastY: this.lastY / h,
 						offsetX: offsetX / w,
 						offsetY: offsetY / h,
-						color: this.ctxOptions.strokeStyle
+						color: this.drawSettings.strokeStyle
 					})
 				}
 				this.lastX = offsetX;
@@ -123,14 +120,15 @@ export default {
 		}
 	},
 	watch: {
-		//if any option in ctxOptions changes, update the ctx object.
+		//if any option in drawSettings changes, update the ctx object.
 		//TODO find a way to only update the actual changed property without making a watcher for each.
-		ctxOptions: {
+		drawSettings: {
 			handler(newV) {
-				this.ctx.strokeStyle = this.ctxOptions.strokeStyle;
-				this.ctx.lineCap = this.ctxOptions.lineCap;
-				this.ctx.lineJoin = this.ctxOptions.lineJoin;
-				this.ctx.lineWidth = this.ctxOptions.lineWidth;
+				console.log('WATCHIN DEM DRAWSETTUNGS', newV)
+				this.ctx.strokeStyle = newV.strokeStyle;
+				this.ctx.lineCap = newV.lineCap;
+				this.ctx.lineJoin = newV.lineJoin;
+				this.ctx.lineWidth = newV.lineWidth;
 			},
 			deep: true
 		},
@@ -156,7 +154,8 @@ export default {
 	computed: {
 		...mapState([
 			'gameOverlay',
-			'game'
+			'game',
+			'drawSettings'
 		]),
 		overlaySize() {
 			return{

@@ -44,6 +44,12 @@ export default {
 	SOCKET_woordgok: (state, payload) => {
 		state.chatLog.push(payload)
 	},
+	SOCKET_changeDrawSetting: (state, payload) => {
+		state.drawSettings = {
+			...state.drawSettings,
+			...payload
+		}
+	},
 	SOCKET_gameEnd: (state, payload) => {
 		state.gameOverlay = {
 			show: true,

@@ -48,6 +48,9 @@ function onConnection(socket){
 	socket.on('undoAction', data => {
 		socket.broadcast.emit('undoAction', data)
 	})
+	socket.on('changeDrawSetting', data => {
+		io.emit('changeDrawSetting', data)
+	})
 	socket.on('disconnect', () => {
 	  gameMaster.removeUser(socket.username);
 	  socket.broadcast.emit('updateUsers', gameMaster.getUsers());
