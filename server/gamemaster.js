@@ -18,10 +18,14 @@ let game = {...gameObj};
 
 module.exports = {
 	createGame: function(lengthGame, noOfRounds) {
-		game = {...gameObj}
+		game.drawer: -1;
+		game.currentRound: 0;
 		game.lengthGame = lengthGame;
 		game.totalRounds = noOfRounds;
-		console.log("create game", game.lengthGame, game.totalRounds);
+		//reset points if this is a new round.
+		for(i=0; i < game.players.length; i++){
+			game.players[i].points = 0;
+		}
 		return;
 	},
 	newRound: function() {
@@ -94,7 +98,10 @@ function newRound(){
 		}
 		game.drawer++;
 		game.players[game.drawer].drawer = true;
-
+		//reset guessedcorrect property for all users
+		for(i=0; i < game.players.length; i++){
+			game.players[i].guessedCorrect = false;
+		}
 		io.emit('announceDrawer',{
 			drawer:game.players[game.drawer],
 			round: game.currentRound,
@@ -127,9 +134,6 @@ function wordCheck(data, socket){
 			}
 		}
 		if(game.correctGuesses === game.players.length-1){//everyone guessed correctly
-			for(i=0; i < game.players.length; i++){
-				game.players[i].guessedCorrect = false;
-			}
 			game.correctGuesses = 0;
 			clearInterval(interval)
 			newRound();
