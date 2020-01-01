@@ -22,7 +22,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 Overlay:
 1. pickWord (either words or show drawer)
 2. gameEnd (scoreboard for game with boss new game)
-3. Points at roundEnd (scoreboard for round)
+3. Points at roundEnd (scoreboard for round) + show word
 4.
 
  general
@@ -59,7 +59,7 @@ clear tool
 #bugs
 * The login screen only looks at gamestarted that is announced by socket. It should wait for both a username and the game start.
 * Upon selecting a username the client should receive a gameStarted property to jump into games that are running.
-* Should not be able to start the game with one person
+*Should not be able to start the game with one person*
 * Resizing canvas that other elements overlap it, will delete some of the drawing, never to return! :(
 * more resizing: shit becomes blur yo.
 *Drawing should only be possible for the drawer*
