@@ -51,7 +51,7 @@ Have some sort of timeout between loading states for better overview of what's g
 
 --- for the canvas
 *Colors/*
-sizes of brush
+*sizes of brush*
 eraser
 fill tool
 clear tool
@@ -61,6 +61,7 @@ clear tool
 * Upon selecting a username the client should receive a gameStarted property to jump into games that are running.
 * Should not be able to start the game with one person
 * Resizing canvas that other elements overlap it, will delete some of the drawing, never to return! :(
+* more resizing: shit becomes blur yo.
 *Drawing should only be possible for the drawer*
 *Users should not be able to guess anymore after a correct (but chatting should be possible)*
 *The drawer shouldn't be able to guess words*.

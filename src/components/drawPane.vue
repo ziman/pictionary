@@ -55,11 +55,21 @@ export default {
 		},
 		undoDrawing(e, data){
 			if(this.game.youAreTheDrawer || data){
-				//clears current drawing and replace it with a base64 img provided either through socket or in our array
+				//clears current drawing and replace it with a base64 img provided
+				//either through socket or in our array
 				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 				var image = new Image();
 				image.onload = () => {
-					this.ctx.drawImage(image,0,0)
+					//scale tryout?
+					if(data && data.width){
+						let scaleW = data.width/this.cnvWidth;
+						let scaleH = data.height/this.cnvHeight;
+						console.log(scaleW,scaleH)
+						this.ctx.scale(scaleW, scaleH)
+					}
+					this.ctx.drawImage(image,0,0, this.cnvWidth, image.height * (this.cnvWidth/image.width) )
+					// this.ctx.drawImage(image,0,0)
+
 				}
 				let previousState;
 				if(data){
@@ -106,7 +116,12 @@ export default {
 			}
 		},
 		handleResize(){
+			//get cnvwidht and cnvheight here. pass them along to the data.
+			//inside the undoDrawing function do the math to scale. aspect should be similar.
+			// so maaaybe only width is necesarry? Scale by applying the difference?
 			let ploatie = this.canvas.toDataURL();
+			let cnvploateWidth = this.cnvWidth.toString();
+			let cnvploateHieght = this.cnvHeight.toString();
 
 			this.$nextTick(() => {
 				let width = this.canvas.parentNode.clientWidth;
@@ -114,8 +129,13 @@ export default {
 				//16:9 ?
 				let height = this.cnvWidth * 10 / 16;
 				this.cnvHeight = height;
+				this.ctx.imageSmoothingEnabled = false;
 				//reapply image data (maybe rename undo function?)
-				this.undoDrawing(null, {imagesrc: ploatie})
+				this.undoDrawing(null, {
+					imagesrc: ploatie,
+					width:cnvploateWidth,
+					height:cnvploateHieght
+				})
 			})
 		}
 	},
@@ -180,6 +200,11 @@ export default {
 </script>
 
 <style>
+#tekenbord {
+	border: 1px solid #ccc;
+	image-rendering: pixelated;
+	cursor:crosshair;
+}
 #tekenbord-overlay {
 	position: absolute;
 	top: 0;
