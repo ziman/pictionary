@@ -44,7 +44,10 @@ module.exports = {
 		let user = { //...data ??? waarschijnlijk ja.
 			username: data.username,
 			id: data.id,
-			guessedCorrect: false,
+			round:{
+				guessedCorrect: false,
+				pointsThisRound: 0
+			},
 			points: 0
 		};
 		if(game.players.length === 0) {
@@ -86,6 +89,8 @@ module.exports = {
 
 function newRound(){
 	console.log("newroundmachine", game.totalRounds, game.currentRound)
+	console.log(game.players)
+
 	if(game.drawer === game.players.length-1) {
 		game.currentRound++;
 		game.players[game.drawer].drawer = false;
@@ -100,7 +105,10 @@ function newRound(){
 		game.players[game.drawer].drawer = true;
 		//reset guessedcorrect property for all users
 		for(i=0; i < game.players.length; i++){
-			game.players[i].guessedCorrect = false;
+			game.players[i].round = {
+				guessedCorrect: false,
+				pointsThisRound: 0
+			}
 		}
 		io.emit('announceDrawer',{
 			drawer:game.players[game.drawer],
@@ -120,12 +128,25 @@ function newRound(){
 	}
 }
 
+function showScoreScreen(){
+	//Denk even na over: hoe gaan we dit doen met de gameEnd. Daar moet ook een scorescreen.
+	//Moet dit geen aparte functie zijn, maar in newRound? lijkt me niet.
+	//Deze functie zou 'getScoreBoard' kunnen heten die de scores pusht naar alle connecties.
+	//
+	io.emit('showScoreScreen', {
+		users: game.players
+	})
+	setTimeout(function () {
+		newRound()
+	}, 5000);
+}
+
 function wordCheck(data, socket){
 	if(data.woord === game.currentWord){ //correct guess
 		for(i=0; i < game.players.length; i++){
 			//check who guessed it, make sure it isn't already guessed by them AND that hey aren't the drawer
-			if(game.players[i].id === socket.id && !game.players[i].guessedCorrect && !game.players[i].drawer){
-				game.players[i].guessedCorrect = true;
+			if(game.players[i].id === socket.id && !game.players[i].round.guessedCorrect && !game.players[i].drawer){
+				game.players[i].round.guessedCorrect = true;
 				game.correctGuesses++;
 				data.correct = true;
 				socket.emit('woordGok', data);
@@ -136,7 +157,9 @@ function wordCheck(data, socket){
 		if(game.correctGuesses === game.players.length-1){//everyone guessed correctly
 			game.correctGuesses = 0;
 			clearInterval(interval)
-			newRound();
+			//Show scorescreen to people?
+			showScoreScreen();
+			// newRound();
 		}
 	} else{
 		//incorrect guess or just chatting
@@ -151,6 +174,7 @@ function calculatePoints(userIndex){
 	if(timer > arbitraryCutoffPoint){
 		timer = timer - Math.floor(timer / game.players.length);
 	}
+	game.players[userIndex].round.pointsThisRound = points;
 	game.players[userIndex].points += points;
 }
 
@@ -173,6 +197,8 @@ function timertje() {
 	io.emit('updateTimer', timer)
 	if(timer === 0){
 		clearInterval(interval);
-		newRound();
+		showScoreScreen();
+
+		// newRound();
 	}
 }

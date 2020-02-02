@@ -12,7 +12,9 @@
 			>
 		</canvas>
 		<toolbar v-if="this.game.youAreTheDrawer"/>
-		<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
+		<transition name="fade">
+			<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
+		</transition>
 	</div>
 </template>
 
@@ -200,6 +202,13 @@ export default {
 </script>
 
 <style>
+.fade-enter, .fade-leave-to{
+	opacity: 0
+}
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .5s;
+}
 #tekenbord {
 	border: 1px solid #ccc;
 	image-rendering: pixelated;

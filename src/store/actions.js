@@ -23,6 +23,9 @@ export default {
 	SOCKET_woordGok: ({ commit }, payload) => {
 		commit('SOCKET_woordgok', payload)
 	},
+	SOCKET_showScoreScreen:({commit}, payload) => {
+		commit('SOCKET_showScoreScreen', payload)
+	},
 	SOCKET_changeDrawSetting: ({ commit }, payload) => {
 		commit('SOCKET_changeDrawSetting', payload)
 	},

@@ -29,6 +29,13 @@ export default {
 		state.word.pickAWord = data;
 		state.game.youAreTheDrawer = true;
 	},
+	SOCKET_showScoreScreen: (state, data) => {
+		state.users = data.users;
+		state.gameOverlay = {
+			show: true,
+			reason: 'scoreScreen'
+		}
+	},
 	SOCKET_startRound: (state, wordData) => {
 		if(wordData.word) { //the actual word
 			state.word.pickedWord = wordData.word;

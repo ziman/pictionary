@@ -23,14 +23,14 @@ Overlay:
 1. pickWord (either words or show drawer)
 2. gameEnd (scoreboard for game with boss new game)
 3. Points at roundEnd (scoreboard for round) + show word
-4.
+
 
  general
  - *show end game screen with possibility to restart*
 	 - *think about overlay with points on it - probably a system with state/mutations should be implemented*
  - *undo drawing functionality*
  - the word should be shown to everyone when the round ended.
- - transition animations. =)
+ - *transition animations. =)
  - *clear canvas at new round.*
 
 ##todos shoulds
@@ -57,6 +57,7 @@ fill tool
 clear tool
 
 #bugs
+* Word guesses should be case insensitive
 * The login screen only looks at gamestarted that is announced by socket. It should wait for both a username and the game start.
 * Upon selecting a username the client should receive a gameStarted property to jump into games that are running.
 *Should not be able to start the game with one person*
