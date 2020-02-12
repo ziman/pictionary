@@ -35,6 +35,7 @@ export default {
 			show: true,
 			reason: 'scoreScreen'
 		}
+		state.word.pickedWord = data.word
 	},
 	SOCKET_startRound: (state, wordData) => {
 		if(wordData.word) { //the actual word

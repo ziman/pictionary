@@ -134,7 +134,8 @@ function showScoreScreen(){
 	//Deze functie zou 'getScoreBoard' kunnen heten die de scores pusht naar alle connecties.
 	//
 	io.emit('showScoreScreen', {
-		users: game.players
+		users: game.players,
+		word: game.currentWord
 	})
 	setTimeout(function () {
 		newRound()

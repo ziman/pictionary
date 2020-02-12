@@ -16,7 +16,8 @@
 				<adminPanel v-if="user.baas" />
 			</div>
 			<div id="scorescreen" v-if="gameOverlay.reason === 'scoreScreen'" key="scoreScreen">
-				<h2>Score this round</h2>
+				<h2>The word was: {{word.pickedWord}}</h2>
+				<p>Scores this round:</p>
 				<ul>
 					<li v-for='user in users' :key="user.id">
 						{{user.username}}: {{user.round.pointsThisRound}}
