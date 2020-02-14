@@ -56,11 +56,14 @@ module.exports = {
 		game.players.push(user);
 		return user;
 	},
-	removeUser: function (username) {
+	removeUser: function (id) {
 		for(i = 0; i < game.players.length; i++){
-			if(game.players[i].username === username){
+			if(game.players[i].id === id){
 				//dit is een rare check. players[0] is altijd baas. Het klopt dus maar een beetje?
-				if (game.players[i].baas && game.players[1]) game.players[1].baas = true;
+				if (game.players[i].baas && game.players[1]){
+					 game.players[1].baas = true;
+					 io.to(game.players[1].id).emit("youAreTheNewBaas");
+				 }
 				game.players.splice(i, 1)
 				break;
 			}
@@ -81,10 +84,10 @@ module.exports = {
 		timer = startTime;
 		interval = setInterval(timertje, 1000);
 	},
-	stopTimer: function(){
-		clearInterval(interval)
-		newRound();
-	}
+	// stopTimer: function(){
+	// 	clearInterval(interval)
+	// 	newRound();
+	// }
 }
 
 function newRound(){
@@ -143,7 +146,7 @@ function showScoreScreen(){
 }
 
 function wordCheck(data, socket){
-	if(data.woord === game.currentWord){ //correct guess
+	if(data.woord.toUpperCase() === game.currentWord.toUpperCase()){ //correct guess
 		for(i=0; i < game.players.length; i++){
 			//check who guessed it, make sure it isn't already guessed by them AND that hey aren't the drawer
 			if(game.players[i].id === socket.id && !game.players[i].round.guessedCorrect && !game.players[i].drawer){
@@ -158,9 +161,9 @@ function wordCheck(data, socket){
 		if(game.correctGuesses === game.players.length-1){//everyone guessed correctly
 			game.correctGuesses = 0;
 			clearInterval(interval)
-			//Show scorescreen to people?
+			//Show scorescreen to people
 			showScoreScreen();
-			// newRound();
+			// newRound() is being called from scorescreen
 		}
 	} else{
 		//incorrect guess or just chatting

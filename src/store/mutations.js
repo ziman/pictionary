@@ -6,6 +6,9 @@ export default {
 		state.user.userName = userData.username;
 		state.user.baas = userData.baas
 	},
+	SOCKET_youAreTheNewBaas:(state) => {
+		state.user.baas = true
+	},
 	SOCKET_gameStarted: (state, noOfRounds) => {
 		state.game.noOfRounds = noOfRounds;
 		state.gameStarted = true;

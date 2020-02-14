@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3>Players:</h3>
+		<!-- <h3>Players:</h3> -->
 		<ul>
 			<!-- <li :class="[user.baas ? 'baas' : '','user-in-the-list']"
 			v-for="user in users">{{ user.username }}</li> -->
@@ -31,7 +31,11 @@ export default{
 
 <style>
 .user-in-the-list {
-
+	position:relative;
+	padding:5px;
+}
+.user-in-the-list:nth-child(2n){
+	background-color:#eee;
 }
 .correctGuess{
 	background-color:lightgreen;
@@ -40,10 +44,13 @@ export default{
 	list-style-type:none;
 }
 .user-in-the-list.drawer:after{
-	content:' is drawing';
-	font-size:.6em;
+	content:' ✎';
+	font-size:1.5em;
 	text-transform: uppercase;
 	vertical-align: middle;
+	position:absolute;
+	right:5px;
+	top:25%;
 }
 .user-in-the-list.baas:before{
 	content: '✪';

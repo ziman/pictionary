@@ -52,7 +52,7 @@ function onConnection(socket){
 		io.emit('changeDrawSetting', data)
 	})
 	socket.on('disconnect', () => {
-	  gameMaster.removeUser(socket.username);
+	  gameMaster.removeUser(socket.id);
 	  socket.broadcast.emit('updateUsers', gameMaster.getUsers());
   })
 }

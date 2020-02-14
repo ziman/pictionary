@@ -19,17 +19,17 @@ npm run build
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 #todos needs
-Overlay:
+*Overlay:
 1. pickWord (either words or show drawer)
 2. gameEnd (scoreboard for game with boss new game)
-3. Points at roundEnd (scoreboard for round) + show word
+3. Points at roundEnd (scoreboard for round) + show word*
 
 
  general
  - *show end game screen with possibility to restart*
 	 - *think about overlay with points on it - probably a system with state/mutations should be implemented*
  - *undo drawing functionality*
- - the word should be shown to everyone when the round ended.
+ - *the word should be shown to everyone when the round ended.
  - *transition animations. =)
  - *clear canvas at new round.*
 
@@ -47,7 +47,7 @@ point system
 		If 8 people connect (or guess correctly) the first gets 8 points, the second 7 etc.
 	12. *for this: we need to figure out WHO guessed correcly first and set a correct guess to their {}.*
 		*also then we can count points for this user.*
-Have some sort of timeout between loading states for better overview of what's going on.
+*Have some sort of timeout between loading states for better overview of what's going on.*
 
 --- for the canvas
 *Colors/*
@@ -57,7 +57,9 @@ fill tool
 clear tool
 
 #bugs
-* Word guesses should be case insensitive
+*player list should show 'is choosing a word' instead of 'is drawing' when he/she hasn't chosen a word
+*the word is shown in the topbar at round end.
+*Word guesses should be case insensitive*
 * The login screen only looks at gamestarted that is announced by socket. It should wait for both a username and the game start.
 * Upon selecting a username the client should receive a gameStarted property to jump into games that are running.
 *Should not be able to start the game with one person*

@@ -2,6 +2,10 @@ export default {
 	SOCKET_updateUsers: ({ commit }, payload) => {
 		commit('SOCKET_updateUsers', payload)
 	},
+	SOCKET_youAreTheNewBaas: ({commit}, payload) => {
+		console.log('yooooo')
+		commit('SOCKET_youAreTheNewBaas')
+	},
 	SOCKET_setUser: ({ commit }, data) => {
 		commit('SOCKET_setUser', data)
 	},
