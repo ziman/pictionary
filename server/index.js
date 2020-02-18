@@ -22,7 +22,11 @@ function onConnection(socket){
 			id: socket.id
 		}
 		let newUser = gameMaster.addUser(user);
-		socket.emit('setUser', newUser);
+		console.log(newUser)
+		socket.emit('setUser', newUser.user);
+		if(newUser.gameData !== undefined){
+			socket.emit('gameStarted', newUser.gameData.totalRounds)
+		}
 		io.emit('updateUsers', gameMaster.getUsers());
 	})
 	socket.on('tekenen', (data) => {

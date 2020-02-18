@@ -5,6 +5,7 @@ let io;
 let interval;
 
 let gameObj = {
+	gameStarted: false,
 	totalRounds: 0,
 	currentRound: 0,
 	lengthGame: 0,
@@ -26,6 +27,7 @@ module.exports = {
 		for(i=0; i < game.players.length; i++){
 			game.players[i].points = 0;
 		}
+		game.gameStarted = true;
 		return;
 	},
 	newRound: function() {
@@ -54,7 +56,15 @@ module.exports = {
 			user.baas = true;
 		}
 		game.players.push(user);
-		return user;
+		let gameData;
+		if(game.gameStarted === true){
+			gameData = {
+				currentRound: game.currentRound,
+				totalRounds: game.totalRounds
+			}
+		}
+		let answer = {user, gameData}
+		return answer;
 	},
 	removeUser: function (id) {
 		for(i = 0; i < game.players.length; i++){
@@ -132,10 +142,6 @@ function newRound(){
 }
 
 function showScoreScreen(){
-	//Denk even na over: hoe gaan we dit doen met de gameEnd. Daar moet ook een scorescreen.
-	//Moet dit geen aparte functie zijn, maar in newRound? lijkt me niet.
-	//Deze functie zou 'getScoreBoard' kunnen heten die de scores pusht naar alle connecties.
-	//
 	io.emit('showScoreScreen', {
 		users: game.players,
 		word: game.currentWord

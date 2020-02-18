@@ -1,4 +1,4 @@
-# pictionaryfullstack
+# pictionary in vue
 
 ## Project setup
 ```
