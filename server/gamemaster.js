@@ -43,9 +43,8 @@ module.exports = {
 		wordCheck(data, socket)
 	},
 	addUser: function(data) {
-		let user = { //...data ??? waarschijnlijk ja.
-			username: data.username,
-			id: data.id,
+		let user = {
+			...data, //username and id
 			round:{
 				guessedCorrect: false,
 				pointsThisRound: 0
@@ -56,6 +55,7 @@ module.exports = {
 			user.baas = true;
 		}
 		game.players.push(user);
+		//if a user joins after the game already started, add some gameData
 		let gameData;
 		if(game.gameStarted === true){
 			gameData = {

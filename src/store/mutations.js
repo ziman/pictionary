@@ -3,15 +3,25 @@ export default {
 		state.users = users;
 	},
 	SOCKET_setUser: (state, userData) => {
-		state.user.userName = userData.username;
-		state.user.baas = userData.baas
+		console.log(userData)
+		state.user.userName = userData.user.username;
+		state.user.baas = userData.user.baas
+		//user joined after game has started
+		if(userData.gameData){
+			state.gameStarted = true;
+			state.game.noOfRounds = userData.gameData.totalRounds;
+			state.game.currentRound = userData.gameData.currentRound;
+		}
 	},
 	SOCKET_youAreTheNewBaas:(state) => {
 		state.user.baas = true
 	},
 	SOCKET_gameStarted: (state, noOfRounds) => {
 		state.game.noOfRounds = noOfRounds;
-		state.gameStarted = true;
+
+		if(state.user.userName){
+			state.gameStarted = true;
+		}
 	},
 	SOCKET_announceDrawer: (state, data) => {
 		//reset in case you were drawer previously
