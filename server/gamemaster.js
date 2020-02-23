@@ -12,7 +12,8 @@ let gameObj = {
 	players: [],
 	drawer: -1, //got 'em
 	currentWord: '',
-	correctGuesses: 0
+	correctGuesses: 0,
+	canvasURL: 0
 }
 
 let game = {...gameObj};
@@ -60,7 +61,9 @@ module.exports = {
 		if(game.gameStarted === true){
 			gameData = {
 				currentRound: game.currentRound,
-				totalRounds: game.totalRounds
+				totalRounds: game.totalRounds,
+				canvasImage: game.canvasURL,
+				lengthWord: game.currentWord.length
 			}
 		}
 		let answer = {user, gameData}
@@ -94,6 +97,12 @@ module.exports = {
 		timer = startTime;
 		interval = setInterval(timertje, 1000);
 	},
+	//everytime a draw action takes place this is updated. This is saved on the server for late players.
+	//it's a little ridiculous to sent this much data just for late players.
+	//Maybe let them join on the next round instead?
+	setCanvas: function(image){
+		game.canvasURL= image
+	}
 	// stopTimer: function(){
 	// 	clearInterval(interval)
 	// 	newRound();
@@ -103,6 +112,9 @@ module.exports = {
 function newRound(){
 	console.log("newroundmachine", game.totalRounds, game.currentRound)
 	console.log(game.players)
+	//reset canvas for new players
+	game.canvasURL = 0;
+	game.currentWord = '';
 
 	if(game.drawer === game.players.length-1) {
 		game.currentRound++;

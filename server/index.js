@@ -21,14 +21,23 @@ function onConnection(socket){
 			username: data,
 			id: socket.id
 		}
+		//TODO just do all logic in gameMaster, yes?
 		let newUser = gameMaster.addUser(user);
 		console.log(newUser)
 		socket.emit('setUser', newUser);
+		if(newUser.gameData && newUser.gameData.canvasImage){
+			//undoAction sets a canvas based on base64 URL. Probably should rename this function now.
+			socket.emit('undoAction', {imagesrc: newUser.gameData.canvasImage})
+		}
 		io.emit('updateUsers', gameMaster.getUsers());
 	})
 	socket.on('tekenen', (data) => {
 		socket.broadcast.emit('drawing', data)
 	});
+
+	socket.on('completeCanvas', (image) => {
+		gameMaster.setCanvas(image)
+	})
 
 	socket.on('woordGok', data => {
 		gameMaster.checkWord(data, socket);

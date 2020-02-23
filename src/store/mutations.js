@@ -11,6 +11,10 @@ export default {
 			state.gameStarted = true;
 			state.game.noOfRounds = userData.gameData.totalRounds;
 			state.game.currentRound = userData.gameData.currentRound;
+			state.gameOverlay = {
+				show: false
+			}
+			state.word.lengthWord = userData.gameData.lengthWord
 		}
 	},
 	SOCKET_youAreTheNewBaas:(state) => {

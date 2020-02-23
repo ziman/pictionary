@@ -42,13 +42,24 @@ export default {
 	},
 	methods: {
 		mouseup(e) {
-			this.isDrawing = false;
+			if(this.game.youAreTheDrawer) {
+				this.isDrawing = false;
+				let image = this.canvas.toDataURL();
+
+				this.$socket.emit('completeCanvas',
+					image
+				)
+			}
 		},
 		mousedown(e) {
-			this.imgObjArray.push(this.canvas.toDataURL());
-			this.isDrawing = true;
-			this.lastX = e.offsetX;
-			this.lastY = e.offsetY;
+			if(this.game.youAreTheDrawer) {
+				let image = this.canvas.toDataURL();
+				this.imgObjArray.push(image);
+
+				this.isDrawing = true;
+				this.lastX = e.offsetX;
+				this.lastY = e.offsetY;
+			}
 		},
 		mousemove(e) {
 			if(this.game.youAreTheDrawer) {
@@ -170,6 +181,7 @@ export default {
 			this.teken(null, data)
 		},
 		undoAction(data) {
+			console.log('Lekker undo hacken', data)
 			this.undoDrawing(null, data)
 		}
 	},
