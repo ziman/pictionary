@@ -14,7 +14,8 @@ export default {
 			state.gameOverlay = {
 				show: false
 			}
-			state.word.lengthWord = userData.gameData.lengthWord
+			state.word.lengthWord = userData.gameData.lengthWord;
+
 		}
 	},
 	SOCKET_youAreTheNewBaas:(state) => {

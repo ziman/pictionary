@@ -28,6 +28,8 @@ function onConnection(socket){
 		if(newUser.gameData && newUser.gameData.canvasImage){
 			//undoAction sets a canvas based on base64 URL. Probably should rename this function now.
 			socket.emit('undoAction', {imagesrc: newUser.gameData.canvasImage})
+			socket.emit('changeDrawSetting', newUser.gameData.drawSettings)
+
 		}
 		io.emit('updateUsers', gameMaster.getUsers());
 	})
@@ -59,6 +61,7 @@ function onConnection(socket){
 		socket.broadcast.emit('undoAction', data)
 	})
 	socket.on('changeDrawSetting', data => {
+		gameMaster.setDrawSettings(data)
 		io.emit('changeDrawSetting', data)
 	})
 	socket.on('disconnect', () => {

@@ -120,8 +120,8 @@ export default {
 						lastX: this.lastX / w,
 						lastY: this.lastY / h,
 						offsetX: offsetX / w,
-						offsetY: offsetY / h,
-						color: this.drawSettings.strokeStyle
+						offsetY: offsetY / h
+						// color: this.drawSettings.strokeStyle
 					})
 				}
 				this.lastX = offsetX;

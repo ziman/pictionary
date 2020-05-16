@@ -44,4 +44,5 @@ clear tool
 	* when connect halfway: get the right drawingsettings (width + color)
 *The login screen only looks at gamestarted that is announced by socket. It should wait for both a username and the game start.*
 * Resizing canvas that other elements overlap it, will delete some of the drawing, never to return! :(
+* Resizing: make the size of the canvas a solid value. Then scale down with css. 
 * more resizing: shit becomes blur yo.
