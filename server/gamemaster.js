@@ -206,8 +206,15 @@ function calculatePoints(userIndex){
 	//if pointType = timebased || guessbased (for now we do timebased)
 	const points = timer;
 	const arbitraryCutoffPoint = 20;
+	//Reduce timer to make points and rounds more exciting.
+	//Always make sure there are [arbirarty] seconds left before round end.
 	if(timer > arbitraryCutoffPoint){
-		timer = timer - Math.floor(timer / game.players.length);
+		let newTimer = timer - Math.floor(timer / game.players.length);
+		if(newTimer < arbitraryCutoffPoint) {
+			timer = arbitraryCutoffPoint
+		} else {
+			timer = newTimer
+		}
 	}
 	game.players[userIndex].round.pointsThisRound = points;
 	game.players[userIndex].points += points;
