@@ -5,7 +5,10 @@
 
 		<div class="seven columns" v-else-if="word.lengthWord"> <!-- Add the guessed word here! -->
 			Word to guess:
-			<span class="letterlijntje" v-for="space in word.lengthWord">_ </span>
+			<span class="letterlijntje" v-for="space in word.lengthWord" :key="space">
+				<span v-if="word.spaceLocations.includes(space-1)">&nbsp; </span>
+				<span v-else>_ </span>
+			</span>
 		</div>
 		<div class="two columns">Time left: {{game.timer}}</div>
 	</div>
@@ -30,8 +33,7 @@ div {
 	margin:.5em 1em;
 }
 .letterlijntje{
-	font-size:3em;
-	font-weight: bold;
+	font-size:2em;
 	line-height:1px;
 }
 </style>

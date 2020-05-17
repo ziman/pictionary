@@ -59,8 +59,9 @@ export default {
 		if(wordData.word) { //the actual word
 			state.word.pickedWord = wordData.word;
 		}
-		if(wordData.wordLength) { //the length of the word
-			state.word.lengthWord = wordData.wordLength
+		if(wordData.lengthWord) { //the length of the word
+			state.word.spaceLocations = wordData.spaceLocations
+			state.word.lengthWord = wordData.lengthWord
 		}
 		state.gameOverlay.show = false;
 	},

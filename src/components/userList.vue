@@ -6,7 +6,7 @@
 			v-for="user in users">{{ user.username }}</li> -->
 			<li :class="[{'baas':user.baas}, {'drawer': user.drawer}, {'correctGuess': user.guessedCorrect}, 'user-in-the-list']"
 			v-for="user in users">{{ user.username }}
-				<span>points: {{user.points}}</span>
+				<div>points: {{user.points}}</div>
 
 			</li>
 		</ul>
@@ -33,6 +33,8 @@ export default{
 .user-in-the-list {
 	position:relative;
 	padding:5px;
+	word-wrap: break-word;
+	list-style:none;
 }
 .user-in-the-list:nth-child(2n){
 	background-color:#eee;

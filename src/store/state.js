@@ -20,7 +20,8 @@ export default {
 	word: {
 		pickAWord: [],
 		pickedWord: '',
-		lengthWord: ''
+		lengthWord: '',
+		spaceLocations: []
 	},
 	drawSettings: {
 		strokeStyle: '#000',

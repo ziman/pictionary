@@ -46,10 +46,11 @@ function onConnection(socket){
 	})
 
 	socket.on('pickWord', word => {
-		gameMaster.setWord(word);
+		let lengthAndSpaceLocation = gameMaster.setWord(word);
+		console.log(lengthAndSpaceLocation)
 		gameMaster.startTimer();
 		socket.emit('startRound', {word: word})
-		socket.broadcast.emit('startRound', {wordLength: word.length})
+		socket.broadcast.emit('startRound', lengthAndSpaceLocation)
 	})
 
 	socket.on('startGame', (gameOptions) => {

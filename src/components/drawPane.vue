@@ -103,15 +103,6 @@ export default {
 				image.src = previousState;
 			}
 		},
-		/*
-		function getMousePos(canvas, evt) {
-			var rect = canvas.getBoundingClientRect();
-			return {
-				x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
-				y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
-			};
-		}
-		*/
 		teken(e, data) {
 			if(this.isDrawing || data) {
 
@@ -142,29 +133,6 @@ export default {
 				this.lastY = y;
 			}
 		}
-		// handleResize(){
-		// 	//get cnvwidht and cnvheight here. pass them along to the data.
-		// 	//inside the undoDrawing function do the math to scale. aspect should be similar.
-		// 	// so maaaybe only width is necesarry? Scale by applying the difference?
-		// 	let ploatie = this.canvas.toDataURL();
-		// 	let cnvploateWidth = this.cnvWidth.toString();
-		// 	let cnvploateHieght = this.cnvHeight.toString();
-		//
-		// 	this.$nextTick(() => {
-		// 		let width = this.canvas.parentNode.clientWidth;
-		// 		this.cnvWidth = width;
-		// 		//16:9 ?
-		// 		let height = this.cnvWidth * 10 / 16;
-		// 		this.cnvHeight = height;
-		// 		this.ctx.imageSmoothingEnabled = false;
-		// 		//reapply image data (maybe rename undo function?)
-		// 		this.undoDrawing(null, {
-		// 			imagesrc: ploatie,
-		// 			width:cnvploateWidth,
-		// 			height:cnvploateHieght
-		// 		})
-		// 	})
-		// }
 	},
 	watch: {
 		//if any option in drawSettings changes, update the ctx object.
@@ -205,12 +173,6 @@ export default {
 			'game',
 			'drawSettings'
 		])
-		// overlaySize() {
-		// 	return{
-		// 		width: this.cnvWidth + 'px',
-		// 		height: this.cnvHeight + 'px'
-		// 	}
-		// }
 	},
 	mounted: function() {
 		this.$nextTick(function () {
@@ -218,6 +180,8 @@ export default {
 			// entire view has been rendered
 			this.canvas = this.$refs.canvas;
 			this.ctx = this.canvas.getContext('2d');
+			this.ctx.imageSmoothingEnabled = true;
+
 			// this.handleResize();
 			// this.canvas.width = this.$refs.canvas.parentNode.clientWidth;
 			// this.canvas.height = window.innerHeight;

@@ -41,7 +41,15 @@ module.exports = {
 	},
 	setWord: function(word){
 		game.currentWord = word;
-		return;
+		let spaceLocations = [];
+		let position = word.indexOf(' ')
+
+		while (position !== -1) {
+		  spaceLocations.push(position)
+		  position = word.indexOf(' ', position + 1)
+		}
+		let lengthWord = word.length;
+		return {lengthWord, spaceLocations};
 	},
 	checkWord: function(data, socket){
 		console.log('gokje ', data)
@@ -190,6 +198,7 @@ function wordCheck(data, socket){
 			}
 		}
 		if(game.correctGuesses === game.players.length-1){//everyone guessed correctly
+			console.log('Correctguesses', game.correctGuesses, game.players.length)
 			game.correctGuesses = 0;
 			clearInterval(interval)
 			//Show scorescreen to people
