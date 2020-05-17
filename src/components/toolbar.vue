@@ -15,7 +15,7 @@
 			@click="changeSize(size)"
 			:class="{'selected': size === drawSettings.lineWidth}">
 				<span
-				:style="{ 'width': (size+2) +'px','height': (size+2) + 'px'}">
+				:style="{ 'width': (size) +'px','height': (size) + 'px'}">
 				</span>
 			</span>
 		</div>
@@ -47,7 +47,7 @@ export default {
 				'#bad80a' //lime
 			],
 			sizes: [
-				1, 3, 5, 10
+				5, 10, 25, 50
 			]
 		}
 	},
@@ -86,6 +86,7 @@ export default {
 	border-radius:25px;
 	box-sizing: border-box;
 	margin: 2px 2px 0;
+	overflow:hidden;
 
 }
 #sizepicker > span{

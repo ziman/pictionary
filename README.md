@@ -38,5 +38,6 @@ clear tool
 
 # bugs
 * When the drawing player leaves, the game goes limbo.
+* when players leave, the amount of correct guesses for the round to end isn't correct.
 * in some rare occasions the startTimer() function gets called twice.
 * when a drawer reaches the edge of the canvas, the drawing doesn't stop. Resulting in straight lines to where the mouse enters the canvas again.
