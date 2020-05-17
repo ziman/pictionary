@@ -13,7 +13,7 @@
 		</canvas>
 		<toolbar v-if="this.game.youAreTheDrawer"/>
 		<transition name="fade">
-			<drawOverlay :style="overlaySize" id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
+			<drawOverlay id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
 		</transition>
 	</div>
 </template>
@@ -31,8 +31,8 @@ export default {
 	data() {
 		return {
 			canvas: null,
-			cnvWidth: 0,
-			cnvHeight:0,
+			cnvWidth: 800,
+			cnvHeight:600,
 			ctx: null,
 			isDrawing: false,
 			lastX: 0,
@@ -55,15 +55,22 @@ export default {
 			if(this.game.youAreTheDrawer) {
 				let image = this.canvas.toDataURL();
 				this.imgObjArray.push(image);
-
 				this.isDrawing = true;
-				this.lastX = e.offsetX;
-				this.lastY = e.offsetY;
+
+				let rect = this.canvas.getBoundingClientRect();
+				const x = (e.clientX - rect.left) / (rect.right - rect.left) * this.canvas.width;
+				const y = (e.clientY - rect.top) / (rect.bottom - rect.top) * this.canvas.height;
+				this.lastX = x;
+				this.lastY = y;
 			}
 		},
 		mousemove(e) {
 			if(this.game.youAreTheDrawer) {
-				this.teken(e, null)
+				let rect = this.canvas.getBoundingClientRect();
+				const x = (e.clientX - rect.left) / (rect.right - rect.left) * this.canvas.width;
+				const y = (e.clientY - rect.top) / (rect.bottom - rect.top) * this.canvas.height;
+				const eData = {x,y}
+				this.teken(eData, null)
 			}
 		},
 		undoDrawing(e, data){
@@ -96,61 +103,68 @@ export default {
 				image.src = previousState;
 			}
 		},
+		/*
+		function getMousePos(canvas, evt) {
+			var rect = canvas.getBoundingClientRect();
+			return {
+				x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+				y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+			};
+		}
+		*/
 		teken(e, data) {
 			if(this.isDrawing || data) {
-				const { offsetX, offsetY } =  data || e;
+
+				const { x, y } =  data || e;
 				const { lastX, lastY } = data || this;
-				const w = this.canvas.width;
-				const h = this.canvas.height;
 
 				if(this.isDrawing) {
 					this.ctx.beginPath();
 					this.ctx.moveTo(lastX,lastY);
-					this.ctx.lineTo(offsetX, offsetY);
+					this.ctx.lineTo(x, y);
 					this.ctx.stroke();
 				} else if(data) {
 					this.ctx.beginPath();
-					this.ctx.moveTo(lastX * w ,lastY * h);
-					this.ctx.lineTo(offsetX * w, offsetY * h);
+					this.ctx.moveTo(lastX, lastY);
+					this.ctx.lineTo(x, y);
 					this.ctx.stroke();
 				}
 
 				if(e){
 					this.$socket.emit('tekenen', {
-						lastX: this.lastX / w,
-						lastY: this.lastY / h,
-						offsetX: offsetX / w,
-						offsetY: offsetY / h
-						// color: this.drawSettings.strokeStyle
+						lastX: this.lastX,
+						lastY: this.lastY,
+						x: x,
+						y: y
 					})
 				}
-				this.lastX = offsetX;
-				this.lastY = offsetY;
+				this.lastX = x;
+				this.lastY = y;
 			}
-		},
-		handleResize(){
-			//get cnvwidht and cnvheight here. pass them along to the data.
-			//inside the undoDrawing function do the math to scale. aspect should be similar.
-			// so maaaybe only width is necesarry? Scale by applying the difference?
-			let ploatie = this.canvas.toDataURL();
-			let cnvploateWidth = this.cnvWidth.toString();
-			let cnvploateHieght = this.cnvHeight.toString();
-
-			this.$nextTick(() => {
-				let width = this.canvas.parentNode.clientWidth;
-				this.cnvWidth = width;
-				//16:9 ?
-				let height = this.cnvWidth * 10 / 16;
-				this.cnvHeight = height;
-				this.ctx.imageSmoothingEnabled = false;
-				//reapply image data (maybe rename undo function?)
-				this.undoDrawing(null, {
-					imagesrc: ploatie,
-					width:cnvploateWidth,
-					height:cnvploateHieght
-				})
-			})
 		}
+		// handleResize(){
+		// 	//get cnvwidht and cnvheight here. pass them along to the data.
+		// 	//inside the undoDrawing function do the math to scale. aspect should be similar.
+		// 	// so maaaybe only width is necesarry? Scale by applying the difference?
+		// 	let ploatie = this.canvas.toDataURL();
+		// 	let cnvploateWidth = this.cnvWidth.toString();
+		// 	let cnvploateHieght = this.cnvHeight.toString();
+		//
+		// 	this.$nextTick(() => {
+		// 		let width = this.canvas.parentNode.clientWidth;
+		// 		this.cnvWidth = width;
+		// 		//16:9 ?
+		// 		let height = this.cnvWidth * 10 / 16;
+		// 		this.cnvHeight = height;
+		// 		this.ctx.imageSmoothingEnabled = false;
+		// 		//reapply image data (maybe rename undo function?)
+		// 		this.undoDrawing(null, {
+		// 			imagesrc: ploatie,
+		// 			width:cnvploateWidth,
+		// 			height:cnvploateHieght
+		// 		})
+		// 	})
+		// }
 	},
 	watch: {
 		//if any option in drawSettings changes, update the ctx object.
@@ -190,13 +204,13 @@ export default {
 			'gameOverlay',
 			'game',
 			'drawSettings'
-		]),
-		overlaySize() {
-			return{
-				width: this.cnvWidth + 'px',
-				height: this.cnvHeight + 'px'
-			}
-		}
+		])
+		// overlaySize() {
+		// 	return{
+		// 		width: this.cnvWidth + 'px',
+		// 		height: this.cnvHeight + 'px'
+		// 	}
+		// }
 	},
 	mounted: function() {
 		this.$nextTick(function () {
@@ -204,11 +218,11 @@ export default {
 			// entire view has been rendered
 			this.canvas = this.$refs.canvas;
 			this.ctx = this.canvas.getContext('2d');
-			this.handleResize();
+			// this.handleResize();
 			// this.canvas.width = this.$refs.canvas.parentNode.clientWidth;
 			// this.canvas.height = window.innerHeight;
-		}),
-		window.addEventListener('resize', this.handleResize);
+		})
+		// window.addEventListener('resize', this.handleResize);
 	}
 }
 </script>
@@ -225,13 +239,18 @@ export default {
 	border: 1px solid #ccc;
 	image-rendering: pixelated;
 	cursor:crosshair;
+	width:100%
 }
 #tekenbord-overlay {
 	position: absolute;
 	top: 0;
+	width:100%;
+	width: calc(100% + 2px);
+	height:100%;
 	background-color: rgba(0,0,0,0.8);
 	color: white;
 	padding: 3em;
 	box-sizing: border-box;
+	border-radius:5px;
 }
 </style>

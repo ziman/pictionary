@@ -99,6 +99,7 @@ module.exports = {
 		io = io2;
 	},
 	startTimer: function () {
+		console.log('starting timer')
 		const startTime = game.lengthGame;
 		timer = startTime;
 		interval = setInterval(timertje, 1000);
