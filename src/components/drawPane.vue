@@ -11,7 +11,7 @@
 			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
 			>
 		</canvas>
-		<toolbar v-if="this.game.youAreTheDrawer"/>
+		<toolbar v-if="this.game.youAreTheDrawer" @undo_last_action="undoDrawing()"/>
 		<transition name="fade">
 			<drawOverlay id="tekenbord-overlay" v-if="gameOverlay.show"></drawOverlay>
 		</transition>

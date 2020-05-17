@@ -1,6 +1,7 @@
 <template>
 	<div id="toolbar">
 		<div id="colorpicker">
+			<div>Color:</div>
 			<!-- <span @click="ChangeColor" style="background-color:#A55"></span>
 			<span style="background-color:#BEA"></span> -->
 			<span v-for="kleur in colors"
@@ -17,6 +18,12 @@
 				<span
 				:style="{ 'width': (size) +'px','height': (size) + 'px'}">
 				</span>
+			</span>
+		</div>
+		<div id="misc_actions">
+			<div>Undo:</div>
+			<span id="undoAction" @click="undoLastAction()">
+
 			</span>
 		</div>
 
@@ -57,6 +64,9 @@ export default {
 		},
 		changeSize(size) {
 			this.$socket.emit('changeDrawSetting', {'lineWidth': size})
+		},
+		undoLastAction() {
+			this.$emit('undo_last_action')
 		}
 	},
 	computed: {
@@ -69,7 +79,8 @@ export default {
 
 <style>
 #sizepicker,
-#colorpicker{
+#colorpicker,
+#misc_actions{
 	float:right;
 	margin:4px;
 }
@@ -94,8 +105,10 @@ export default {
 	justify-content:center;
 	align-items:center;
 }
-#sizepicker > span:hover{
+#sizepicker > span:hover,
+#misc_actions > span:hover{
 	background-color:#ccc;
+	cursor:pointer;
 }
 #sizepicker > span.selected{
 	background-color:#ccc;
@@ -120,5 +133,21 @@ export default {
 	height:100%;
 	float:left;
 	border-radius:25px;
+}
+
+#undoAction{
+	width:2em;
+	height:2em;
+	position:relative;
+	display:block;
+	border-radius:5px;
+	border:1px solid #333;
+	margin:0 auto;
+}
+#undoAction:before{
+	content: "←";
+	margin: 50% 0 0 10%;
+	font-size:1.5em;
+	line-height:1.25em;
 }
 </style>
