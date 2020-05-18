@@ -139,7 +139,6 @@ export default {
 		//TODO find a way to only update the actual changed property without making a watcher for each.
 		drawSettings: {
 			handler(newV) {
-				console.log('WATCHIN DEM DRAWSETTUNGS', newV)
 				this.ctx.strokeStyle = newV.strokeStyle;
 				this.ctx.lineCap = newV.lineCap;
 				this.ctx.lineJoin = newV.lineJoin;
@@ -163,7 +162,6 @@ export default {
 			this.teken(null, data)
 		},
 		undoAction(data) {
-			console.log('Lekker undo hacken', data)
 			this.undoDrawing(null, data)
 		}
 	},

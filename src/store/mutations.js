@@ -3,7 +3,6 @@ export default {
 		state.users = users;
 	},
 	SOCKET_setUser: (state, userData) => {
-		console.log(userData)
 		state.user.userName = userData.user.username;
 		state.user.baas = userData.user.baas
 		//user joined after game has started
