@@ -6,6 +6,9 @@ export default {
 		console.log('yooooo')
 		commit('SOCKET_youAreTheNewBaas')
 	},
+	SOCKET_drawing: ({commit}, payload) => {
+		commit('SOCKET_drawing')
+	},
 	SOCKET_setUser: ({ commit }, data) => {
 		commit('SOCKET_setUser', data)
 	},

@@ -28,5 +28,6 @@ export default {
 		lineCap: 'round',
 		lineJoin: 'round',
 		lineWidth: 1
-	}
+	},
+	drawing:{}
 }

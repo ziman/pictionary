@@ -2,6 +2,9 @@ export default {
 	SOCKET_updateUsers: (state, users) => {
 		state.users = users;
 	},
+	SOCKET_drawing: (state, data) =>{
+		state.drawing = data
+	},
 	SOCKET_setUser: (state, userData) => {
 		state.user.userName = userData.user.username;
 		state.user.baas = userData.user.baas

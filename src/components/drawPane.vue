@@ -155,12 +155,19 @@ export default {
 				}
 			},
 			deep: true
+		},
+		drawing: {
+			handler(data) {
+				// console.log("hallootjes", data)
+				this.teken(null, data)
 			}
+		}
 	},
 	sockets: {
-		drawing(data) {
-			this.teken(null, data)
-		},
+		// drawing(data) {
+		// 	console.log('drawingk', data);
+		// 	this.teken(null, data)
+		// },
 		undoAction(data) {
 			this.undoDrawing(null, data)
 		}
@@ -169,7 +176,8 @@ export default {
 		...mapState([
 			'gameOverlay',
 			'game',
-			'drawSettings'
+			'drawSettings',
+			'drawing'
 		])
 	},
 	mounted: function() {

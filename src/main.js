@@ -11,13 +11,16 @@ Vue.use(require('vue-shortkey'))
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
-	debug: false,
+	debug: true,
 	// connection: 'http://localhost:3000',
-	connection: ':3000/',
+	connection:':3000',
 	vuex: {
 		store,
 		actionPrefix: 'SOCKET_',
 		mutationPrefix: 'SOCKET_'
+	},
+	options: {
+		secure: true
 	}
 }))
 
