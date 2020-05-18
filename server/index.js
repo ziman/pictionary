@@ -10,7 +10,7 @@ app.use(cors())
 const gameMaster = require('./gamemaster.js');
 gameMaster.setio(io);
 
-// app.use(express.static(__dirname + '/static'));
+app.use(express.static(__dirname + '/dist'));
 function onConnection(socket){
 	console.log(socket.id);
 	socket.emit('updateUsers', gameMaster.getUsers());
