@@ -76,6 +76,10 @@ export default {
 	SOCKET_woordgok: (state, payload) => {
 		state.chatLog.push(payload)
 	},
+	SOCKET_otherPlayerGuessedCorrect: (state, payload) => {
+		console.log("PUSHIN PAYLOAD")
+		state.chatLog.push(payload)
+	},
 	SOCKET_changeDrawSetting: (state, payload) => {
 		state.drawSettings = {
 			...state.drawSettings,

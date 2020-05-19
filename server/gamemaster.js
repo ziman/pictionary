@@ -193,7 +193,12 @@ function wordCheck(data, socket){
 				game.correctGuesses++;
 				data.correct = true;
 				socket.emit('woordGok', data);
-				calculatePoints(i)
+				console.log("broadcoast this")
+				socket.broadcast.emit('otherPlayerGuessedCorrect', {
+					user: game.players[i].username,
+					correct: true
+				});
+				calculatePoints(i);
 				io.emit('updateUsers', game.players);
 			}
 		}

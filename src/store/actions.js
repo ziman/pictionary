@@ -9,6 +9,9 @@ export default {
 	SOCKET_drawing: ({commit}, payload) => {
 		commit('SOCKET_drawing')
 	},
+	SOCKET_undoAction: ({commit}, payload) => {
+		commit('SOCKET_undoAction')
+	},
 	SOCKET_setUser: ({ commit }, data) => {
 		commit('SOCKET_setUser', data)
 	},
@@ -30,11 +33,15 @@ export default {
 	SOCKET_woordGok: ({ commit }, payload) => {
 		commit('SOCKET_woordgok', payload)
 	},
-	SOCKET_showScoreScreen:({commit}, payload) => {
+	SOCKET_showScoreScreen:({ commit }, payload) => {
 		commit('SOCKET_showScoreScreen', payload)
 	},
 	SOCKET_changeDrawSetting: ({ commit }, payload) => {
 		commit('SOCKET_changeDrawSetting', payload)
+	},
+	SOCKET_otherPlayerGuessedCorrect: ({ commit }, payload) => {
+		console.log("receiving correct guesseriono")
+		// commit('SOCKET_otherPlayerGuessedCorrect', payload)
 	},
 	SOCKET_gameEnd: ({ commit }, payload) => {
 		commit('SOCKET_gameEnd', payload)
