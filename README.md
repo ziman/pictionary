@@ -23,6 +23,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 * add waaayyyyy more words
 * fix the undo option -> go through vuex Store
 * make interface nice and designery - pretend to know what you're doing.
+* All players should see who guessed correctly
+* Drawer should get some points for making good drawings.
+	* Half points of first guess + 2*(guessers/players)/guessers
 
 Point system
 	(Let admin) choose between:
