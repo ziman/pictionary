@@ -29,5 +29,6 @@ export default {
 		lineJoin: 'round',
 		lineWidth: 1
 	},
-	drawing:{}
+	drawing:{},
+	undoState:{}
 }

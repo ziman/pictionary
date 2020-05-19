@@ -161,15 +161,11 @@ export default {
 				// console.log("hallootjes", data)
 				this.teken(null, data)
 			}
-		}
-	},
-	sockets: {
-		// drawing(data) {
-		// 	console.log('drawingk', data);
-		// 	this.teken(null, data)
-		// },
-		undoAction(data) {
-			this.undoDrawing(null, data)
+		},
+		undoState: {
+			handler(data){
+				this.undoDrawing(null, data)
+			}
 		}
 	},
 	computed: {
@@ -177,7 +173,8 @@ export default {
 			'gameOverlay',
 			'game',
 			'drawSettings',
-			'drawing'
+			'drawing',
+			'undoState'
 		])
 	},
 	mounted: function() {

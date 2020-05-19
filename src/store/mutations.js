@@ -5,6 +5,9 @@ export default {
 	SOCKET_drawing: (state, data) =>{
 		state.drawing = data
 	},
+	SOCKET_undoAction: (state, data) => {
+		state.undoState = data
+	},
 	SOCKET_setUser: (state, userData) => {
 		state.user.userName = userData.user.username;
 		state.user.baas = userData.user.baas
