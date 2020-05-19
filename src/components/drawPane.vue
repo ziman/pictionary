@@ -8,6 +8,7 @@
 			@mousedown="mousedown"
 			@mouseup="mouseup"
 			@mousemove="mousemove"
+			@mouseout="mouseout"
 			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
 			>
 		</canvas>
@@ -35,6 +36,7 @@ export default {
 			cnvHeight:600,
 			ctx: null,
 			isDrawing: false,
+			isInsideCanvas: false,
 			lastX: 0,
 			lastY: 1,
 			imgObjArray: []
@@ -72,6 +74,10 @@ export default {
 				const eData = {x,y}
 				this.teken(eData, null)
 			}
+		},
+		//fix bug where it did not recognize mouse leaving canvas and start drawing straight towards new entry point
+		mouseout(e){
+			this.isDrawing = false;
 		},
 		undoDrawing(e, data){
 			if(this.game.youAreTheDrawer || data){

@@ -21,7 +21,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 # todos
 * remove a word that has already been drawn
 * add waaayyyyy more words
-* fix the undo option -> go through vuex Store
 * make interface nice and designery - pretend to know what you're doing.
 * All players should see who guessed correctly
 * Drawer should get some points for making good drawings.
@@ -46,7 +45,6 @@ Point system
 * When the drawing player leaves, the game goes limbo.
 * when players leave, the amount of correct guesses for the round to end isn't correct.
 * in some rare occasions the startTimer() function gets called twice.
-* when a drawer reaches the edge of the canvas, the drawing doesn't stop. Resulting in straight lines to where the mouse enters the canvas again.
 * Sometimes one correct guess amounts for ALL correct guesses at once - unsure how why or when.
 
 
