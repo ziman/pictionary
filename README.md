@@ -23,6 +23,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 * add waaayyyyy more words
 * make interface nice and designery - pretend to know what you're doing.
 * All players should see who guessed correctly
+	* Currently a message goes out to all the players - but a distinction needs to be made for 'is correct' and 'guessed correct'
 * Drawer should get some points for making good drawings.
 	* Half points of first guess + 2*(guessers/players)/guessers
 
@@ -45,8 +46,6 @@ Point system
 * When the drawing player leaves, the game goes limbo.
 * when players leave, the amount of correct guesses for the round to end isn't correct.
 * in some rare occasions the startTimer() function gets called twice.
-* Sometimes one correct guess amounts for ALL correct guesses at once - unsure how why or when.
-
 
 # way in the future stuff
 * save each drawing for post game screen, show a collage with option to download images.

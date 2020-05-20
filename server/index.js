@@ -34,7 +34,6 @@ function onConnection(socket){
 		io.emit('updateUsers', gameMaster.getUsers());
 	})
 	socket.on('tekenen', (data) => {
-		console.log("drawing", data)
 		socket.broadcast.emit('drawing', data)
 	});
 

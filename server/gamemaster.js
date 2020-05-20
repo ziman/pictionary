@@ -52,7 +52,7 @@ module.exports = {
 		return {lengthWord, spaceLocations};
 	},
 	checkWord: function(data, socket){
-		console.log('gokje ', data)
+		console.log('GM.js:: checkWord ', data)
 		wordCheck(data, socket)
 	},
 	addUser: function(data) {
@@ -136,6 +136,7 @@ function newRound(){
 	//reset canvas for new players
 	game.canvasURL = 0;
 	game.currentWord = '';
+	game.correctGuesses = 0;
 
 	if(game.drawer === game.players.length-1) {
 		game.currentRound++;
@@ -185,32 +186,37 @@ function showScoreScreen(){
 }
 
 function wordCheck(data, socket){
+	// console.log("GM.js:: wordCheck", data)
 	if(data.woord.toUpperCase() === game.currentWord.toUpperCase()){ //correct guess
+		// console.log("GM.js:: wordCheck Correct, starting for loop")
 		for(i=0; i < game.players.length; i++){
+			// console.log("GM.js:: for loop", i)
 			//check who guessed it, make sure it isn't already guessed by them AND that hey aren't the drawer
 			if(game.players[i].id === socket.id && !game.players[i].round.guessedCorrect && !game.players[i].drawer){
+				// console.log("GM.js:: unique guess", game.players[i], "correct guesses before:", game.correctGuesses);
 				game.players[i].round.guessedCorrect = true;
 				game.correctGuesses++;
+				// console.log("GM.js:: new total correctGuesses", game.correctGuesses)
 				data.correct = true;
 				socket.emit('woordGok', data);
-				console.log("broadcoast this")
 				socket.broadcast.emit('otherPlayerGuessedCorrect', {
 					user: game.players[i].username,
 					correct: true
 				});
 				calculatePoints(i);
 				io.emit('updateUsers', game.players);
+				break;
 			}
 		}
 		if(game.correctGuesses === game.players.length-1){//everyone guessed correctly
-			console.log('Correctguesses', game.correctGuesses, game.players.length)
-			game.correctGuesses = 0;
+			// console.log('GM.js:: Correctguesses', game.correctGuesses, game.players.length)
 			clearInterval(interval)
 			//Show scorescreen to people
 			showScoreScreen();
 			// newRound() is being called from scorescreen
 		}
 	} else{
+		// console.log("GM.js:: wrong guess!")
 		//incorrect guess or just chatting
 		io.emit('woordGok', data);
 	}
