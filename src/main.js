@@ -13,7 +13,8 @@ Vue.config.productionTip = false
 Vue.use(new VueSocketIO({
 	debug: true,
 	// connection: 'http://localhost:3000',
-	connection:':3000',
+	// connection: ':3000',
+	connection: 'https://pictionary.functor.sk/',
 	vuex: {
 		store,
 		actionPrefix: 'SOCKET_',

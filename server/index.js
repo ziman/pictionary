@@ -72,6 +72,6 @@ function onConnection(socket){
 }
 io.on('connection', onConnection);
 
-server.listen(3000, function(){
-	console.log('listening on *:3000');
+server.listen(8082, function(){
+	console.log('listening on *:8082');
 });
