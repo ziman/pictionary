@@ -110,6 +110,7 @@ module.exports = {
 		console.log('starting timer')
 		const startTime = game.lengthGame;
 		timer = startTime;
+		clearInterval(interval);
 		interval = setInterval(timertje, 1000);
 	},
 	//everytime a draw action takes place this is updated. This is saved on the server for late players.
@@ -255,9 +256,9 @@ function pickWords(numberOfWords){
 }
 
 function timertje() {
-	timer--;
+	if (timer > 0) timer--;
 	io.emit('updateTimer', timer)
-	if(timer === 0){
+	if(timer <= 0){
 		clearInterval(interval);
 		showScoreScreen();
 	}
