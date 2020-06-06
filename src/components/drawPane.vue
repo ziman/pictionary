@@ -222,5 +222,6 @@ export default {
 	padding: 3em;
 	box-sizing: border-box;
 	border-radius:5px;
+  overflow-y:scroll;
 }
 </style>

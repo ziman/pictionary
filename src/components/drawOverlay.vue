@@ -12,7 +12,7 @@
 			</div>
 			<div id="endscreen" v-if="gameOverlay.reason === 'gameEnd'" key="gameEnd">
 				<h2>Game over!</h2>
-				<li v-for='user in orderedScorescreen' :key="user.id">
+				<li v-for='user in orderedEndScreen' :key="user.id">
 					{{user.username}}: {{user.points}}
 				</li>
 				<adminPanel v-if="user.baas" />
@@ -21,7 +21,7 @@
 				<h2>The word was: {{word.pickedWord}}</h2>
 				<p>Scores this round:</p>
 				<ul>
-					<li v-for='user in users' :key="user.id">
+					<li v-for='user in orderedScorescreen' :key="user.id">
 						{{user.username}}: {{user.round.pointsThisRound}}
 					</li>
 				</ul>
@@ -45,7 +45,13 @@ export default {
 	computed:{
 		localComputed () { /* ... */ },
 		orderedScorescreen () {
-			console.log(this.users)
+      let sortableUsers = [...this.users]
+			return sortableUsers.sort(function(a, b){
+				return b.round.pointsThisRound - a.round.pointsThisRound
+			})
+		},
+    orderedEndScreen () {
+			console.log("watup", this.users)
 			return this.users.sort(function(a, b){
 				return b.points - a.points
 			})

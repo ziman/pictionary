@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div id="userList">
 		<!-- <h3>Players:</h3> -->
 		<ul>
 			<!-- <li :class="[user.baas ? 'baas' : '','user-in-the-list']"
@@ -30,6 +30,10 @@ export default{
 </script>
 
 <style>
+#userList {
+  max-height:90vh;
+  overflow-y: scroll;
+}
 .user-in-the-list {
 	position:relative;
 	padding:5px;

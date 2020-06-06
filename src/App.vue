@@ -41,6 +41,10 @@ export default {
 </script>
 
 <style>
+#app{
+  max-width:1400px;
+  margin:0 auto;
+}
 #loginScreen{
 	width:40em;
 	margin:5em auto;
