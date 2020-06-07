@@ -24,8 +24,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 * make interface nice and designery - pretend to know what you're doing.
 * All players should see who guessed correctly
 	* Currently a message goes out to all the players - but a distinction needs to be made for 'is correct' and 'guessed correct'
-* Drawer should get some points for making good drawings.
-	* Half points of first guess + 2*(guessers/players)/guessers
+
 
 Point system
 	(Let admin) choose between:

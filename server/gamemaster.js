@@ -13,6 +13,7 @@ let gameObj = {
 	drawer: -1, //got 'em
 	currentWord: '',
 	correctGuesses: 0,
+	firstGuessTime: 0,
 	canvasURL: 0,
 	drawSettings: {
 		lineWidth: 1,
@@ -177,6 +178,7 @@ function newRound(){
 }
 
 function showScoreScreen(){
+	calculateDrawerPoints(game.drawer)
 	io.emit('showScoreScreen', {
 		users: game.players,
 		word: game.currentWord
@@ -196,6 +198,10 @@ function wordCheck(data, socket){
 			if(game.players[i].id === socket.id && !game.players[i].round.guessedCorrect && !game.players[i].drawer){
 				// console.log("GM.js:: unique guess", game.players[i], "correct guesses before:", game.correctGuesses);
 				game.players[i].round.guessedCorrect = true;
+				if(game.correctGuesses === 0){
+					game.firstGuessTime = timer;
+					console.log("firstGuess at: ", game.firstGuessTime)
+				};
 				game.correctGuesses++;
 				// console.log("GM.js:: new total correctGuesses", game.correctGuesses)
 				data.correct = true;
@@ -221,6 +227,15 @@ function wordCheck(data, socket){
 		//incorrect guess or just chatting
 		io.emit('woordGok', data);
 	}
+}
+
+function calculateDrawerPoints(drawerIndex){
+	//because correctGuesses is one player shorter (on all correct) than players.length,
+	//the drawer always receives slightly less than the first guesser.
+	let halfPoints = game.firstGuessTime * 0.5;
+	let drawerPoints = Math.ceil(halfPoints + halfPoints * (game.correctGuesses / game.players.length));
+	game.players[drawerIndex].round.pointsThisRound = drawerPoints
+	game.players[drawerIndex].points += drawerPoints
 }
 
 function calculatePoints(userIndex){
