@@ -1,40 +1,27 @@
 module Main where
 
-import Data.Functor ((<&>))
-import Data.Char (isPunctuation, isSpace)
-import Data.Monoid (mappend)
-import Data.Text (Text)
-import Control.Exception (finally)
-import Control.Monad (forM_, forever)
-import Control.Concurrent (MVar, newMVar, modifyMVar_, modifyMVar, readMVar)
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
-
-import qualified Network.WebSockets as WS
-
-data Client = Client
-  { clName :: Text
-  , clConnection :: WS.Connection
-  }
-
-data State = State
-  { stClients :: [Client]
-  }
-
-application :: MVar State -> WS.ServerApp
-application mvState pending = do
-  conn <- WS.acceptRequest pending
-  WS.withPingThread conn 30 (return ()) $ do
-    msg <- WS.receiveData conn
-    _clients <- readMVar mvState <&> stClients
-    WS.sendTextData conn (msg :: Text)
+import Network.EngineIO.Snap (snapAPI)
+import Snap.Core as Snap
+import Snap.Http.Server as Snap
+import Snap.Http.Server.Config ()
+import Network.SocketIO as SocketIO
+import Control.Monad.IO.Class (liftIO)
 
 main :: IO ()
 main = do
-  mvState <- newMVar initialState
-  WS.runServer "127.0.0.1" 9160
-    $ application mvState
+  handler <- SocketIO.initialize snapAPI mkRoutes
+  Snap.httpServe config $ Snap.route
+    [ ("/socket.io", handler)
+    ]
   where
-    initialState = State
-      { stClients = []
-      }
+    config = mconcat
+      [ setPort 8082
+      ]
+      defaultConfig
+
+    mkRoutes = do
+      liftIO $ putStrLn "routes"
+      broadcast "updateUsers" ["hello", "world" :: String]
+
+      on "setUsername" $ \userName -> do
+        liftIO $ putStrLn userName

@@ -12,13 +12,20 @@ dependencies:
 - text
 - transformers
 - containers
-- websockets
+- socket-io
+- engine-io
+- engine-io-snap
+- snap-core
+- snap-server
 - aeson
 
 ghc-options:
 - -threaded
 - -rtsopts
 - -with-rtsopts=-N
+- -Wall
+- -Wextra
+- -Werror
 
 default-extensions:
 - LambdaCase

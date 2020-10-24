@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: aafefa2b04c523213b7f78f326b8b71d6c91d1820a41765d2bac10f4f92aea8a
+-- hash: dcb2ec7f4e28045e160dc1b1ef1e36dd9d870f31bc16943a03d5953a448f13a9
 
 name:           pictionary-hs
 version:        0.1.0.0
@@ -29,12 +29,16 @@ executable backend
   hs-source-dirs:
       src
   default-extensions: LambdaCase TypeApplications TypeOperators ScopedTypeVariables DeriveGeneric DeriveAnyClass DataKinds DerivingStrategies GeneralizedNewtypeDeriving ViewPatterns Strict FlexibleInstances FlexibleContexts GADTs TypeFamilies NamedFieldPuns RankNTypes MultiParamTypeClasses RecordWildCards MultiWayIf OverloadedStrings
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall -Wextra -Werror
   build-depends:
       aeson
     , base >=4.7 && <5
     , containers
+    , engine-io
+    , engine-io-snap
+    , snap-core
+    , snap-server
+    , socket-io
     , text
     , transformers
-    , websockets
   default-language: Haskell2010
