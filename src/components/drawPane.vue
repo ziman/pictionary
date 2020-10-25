@@ -9,6 +9,9 @@
 			@mouseup="mouseup"
 			@mousemove="mousemove"
 			@mouseout="mouseup"
+			@touchstart="mousedown"
+			@touchend="mouseup"
+			@touchmove="mousemove"
 			v-shortkey="{ mac:['meta', 'z'], win:['ctrl', 'z']}" @shortkey="undoDrawing()"
 			>
 		</canvas>
